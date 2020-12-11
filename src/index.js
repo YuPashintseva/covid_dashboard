@@ -1,4 +1,4 @@
-import { getUserAsync } from './api';
+import { getAllCountries, getTotalByCountry } from './api';
 
 var mymap = L.map('mapid').setView([51.505, -0.09], 1.5);
 
@@ -12,12 +12,34 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 }).addTo(mymap);
 
 //var marker = L.marker([51.5, -0.09]).addTo(mymap);
-var circle = L.circle([51.508, -0.11], {
+/*var circle = L.circle([46.82, 8.23], {
     color: 'red',
     fillColor: '#f03',
     fillOpacity: 0.5,
-    radius: 50000
+    radius: 5000
 }).addTo(mymap);
+*/
+
+//const countriesSlug  = getAllCountries('ISO2');
+let country='8';
+getAllCountries('Slug')
+  .then(data => {
+        country = data[0];
+        getTotalByCountry(country)
+            .then(data2 => {
+                makeCircle(data2.slice(-1)[0][1],data2.slice(-1)[0][2]);
+            })
+            
+    }); 
+//console.log(country);
+
+function makeCircle(lat, lon) {
+    var circle = L.circle([lat, lon], {
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.5,
+        radius: 5000
+    }).addTo(mymap);
+} 
 
 
-console.log(getUserAsync());
