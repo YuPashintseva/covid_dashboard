@@ -1,6 +1,6 @@
 import { getTotalByAllCountries } from './api';
 
-var mymap = L.map('mapid').setView([51.505, -0.09], 1.5);
+var mymap = L.map('mapid').setView([51.505, -0.09], 2);
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
@@ -17,7 +17,7 @@ getTotalByAllCountries()
     .then(data => {
         totalCases = data; 
         (totalCases).map((countryItem) => {
-            makeCircle(countryItem.countryInfo.lat, countryItem.countryInfo.long, countryItem.cases/100, 
+            makeCircle(countryItem.countryInfo.lat, countryItem.countryInfo.long, countryItem.casesPerOneMillion*2, 
             [countryItem.casesPerOneMillion, countryItem.deathsPerOneMillion, countryItem.activePerOneMillion, countryItem.recoveredPerOneMillion]);
             return countryItem;
         })
@@ -97,7 +97,12 @@ const bookmarksControl = new L.Control.Bookmarks({
       });
       let radius = 0;
       spot[1][statisticIdx] !== null ? radius = spot[1][statisticIdx] : radius = 0;
-      spot[0].setRadius(radius);
+      spot[0].setRadius(radius*2);
     })
   }
-  //console.log(mapTabs)
+
+
+  var popup = L.popup()
+    .setLatLng([51.5, -0.09])
+    .setContent("I am a standalone popup.")
+    .openOn(mymap);

@@ -40,6 +40,7 @@ html {
 .tab__links {
   font-size: 20px;
   padding: 0 20px;
+  border-top: none;
 }
 
 /*# sourceMappingURL=index.css.map */
