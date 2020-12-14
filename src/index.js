@@ -17,19 +17,23 @@ getTotalByAllCountries()
     .then(data => {
         totalCases = data; 
         (totalCases).map((countryItem) => {
-            makeCircle(countryItem.countryInfo.lat, countryItem.countryInfo.long, countryItem.cases/100);
+            makeCircle(countryItem.countryInfo.lat, countryItem.countryInfo.long, countryItem.cases/100, 
+            [countryItem.casesPerOneMillion, countryItem.deathsPerOneMillion, countryItem.activePerOneMillion, countryItem.recoveredPerOneMillion]);
             return countryItem;
         })
       }); 
 
-function makeCircle(lat, lon, rad) {
+function makeCircle(lat, lon, rad, statistic) {
     var circle = L.circle([lat, lon], {
         color: 'red',
         fillColor: '#f03',
         fillOpacity: 0.5,
         radius: rad
     }).addTo(mymap);
-    arrayOfSpots.push(circle);
+    const localArr = [];
+    localArr.push(circle);
+    localArr.push(statistic);
+    arrayOfSpots.push(localArr);
 } 
 /*
 const bookmarksControl = new L.Control.Bookmarks({
@@ -72,23 +76,28 @@ const bookmarksControl = new L.Control.Bookmarks({
   mapTabs.forEach((item) => {
     item.addEventListener("click", changeMapMode);
   })
-
   function changeMapMode() {
-    console.log(arrayOfSpots);
     let spotColor = 'red';
+    let statisticIdx = 0;
     if (this.id === 'active_cases') {
       spotColor = 'orange';
+      statisticIdx = 2;
     } else if (this.id === 'recover_cases') {
       spotColor = 'green';
+      statisticIdx = 3;
     } else if (this.id === 'fatal_cases') {
       spotColor = 'white';
+      statisticIdx = 1;
     }
+
     arrayOfSpots.forEach((spot) => {
-      spot.setStyle({
+      spot[0].setStyle({
         color: spotColor,
         fillColor: spotColor
       });
-      spot.setRadius(100);
+      let radius = 0;
+      spot[1][statisticIdx] !== null ? radius = spot[1][statisticIdx] : radius = 0;
+      spot[0].setRadius(radius);
     })
   }
   //console.log(mapTabs)
