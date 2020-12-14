@@ -9,7 +9,9 @@
         <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="../covid_dashboard/leaflet/leaflet.css">
         <script src="../covid_dashboard/leaflet/leaflet.js"></script>
-        <link rel="stylesheet" href="../covid_dashboard/src/index.css">     
+        <script src="../covid_dashboard/leaflet_bookmarks/L.Control.Bookmarks.min.js"></script>
+        <link rel="stylesheet" href="../covid_dashboard/src/index.css">
+        <link rel="stylesheet" href="../covid_dashboard/leaflet_bookmarks/leaflet.bookmarks.css">
     </head>
     <body>
         <div class="header">
@@ -23,6 +25,12 @@
             <div class="map__wrapper">
                 <div class="map">
                     <div id="mapid"></div>
+                    <div class="tab">
+                        <button class="tab__links" id="total_cases">Cumulative cases</button>
+                        <button class="tab__links" id="active_cases" >Active cases</button>
+                        <button class="tab__links" id="recover_cases" >Recovered</button>
+                        <button class="tab__links" id="fatal_cases" >Fatality ratio</button>
+                    </div>
                 </div>
             </div>
         </main>
