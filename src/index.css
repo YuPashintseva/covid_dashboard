@@ -20,6 +20,7 @@ html {
   max-width: 1200px;
 }
 
+/** MAIN **/
 .map {
   width: 50%;
   border: 3px solid grey;
@@ -28,10 +29,18 @@ html {
   display: flex;
   justify-content: center;
   padding-top: 3%;
+  flex-direction: column;
+  align-items: center;
 }
 
 #mapid {
   height: 500px;
+}
+
+.tab__links {
+  font-size: 20px;
+  padding: 0 20px;
+  border-top: none;
 }
 
 /*# sourceMappingURL=index.css.map */

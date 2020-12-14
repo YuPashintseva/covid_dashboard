@@ -1,9 +1,10 @@
 // API SERVICES
 
-// GET TOTAL DATA
-export async function getUserAsync() {
-  let response = await fetch(`https://api.covid19api.com/summary`);
+// ANOTHER API https://disease.sh/v3/covid-19/countries?yesterday=true&twoDaysAgo=false&sort=cases&allowNull=true
+
+export async function getTotalByAllCountries() {
+  let response = await fetch('https://disease.sh/v3/covid-19/countries?yesterday=true&twoDaysAgo=false&sort=cases&allowNull=true');
   let data = await response.json();
-  console.log(data);
   return data;
 }
+
