@@ -50,7 +50,7 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal) {
     localArr.push(statistic);
     arrayOfSpots.push(localArr);
 
-    circle.addEventListener("click", function() {
+    circle.addEventListener("mouseover", function() {
       mymap.setView([lat, lon], 5);
       var popup = L.popup()
       .setLatLng([lat, lon])
@@ -75,7 +75,7 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal) {
     localArr2.push(statisticTotal);
     arrayOfSpots.push(localArr2);
 
-    circle2.addEventListener("click", function() {
+    circle2.addEventListener("mouseover", function() {
       mymap.setView([lat, lon], 5);
       var popup = L.popup()
       .setLatLng([lat, lon])
