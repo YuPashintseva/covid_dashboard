@@ -1,9 +1,11 @@
 import { getTotalByAllCountries } from "./api";
 const groupPerMillion = L.featureGroup();
 const groupTotalCases = L.featureGroup();
+const todayTotal = L.featureGroup();
+const toDayPerThousand = L.featureGroup();
 let mymap = "";
 export function createMap() {
-  mymap = L.map("mapid").setView([51.505, -0.09], 5);
+  mymap = L.map("mapid").setView([51.505, -0.09], 3);
   L.tileLayer(
     "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
     {
@@ -37,29 +39,95 @@ export function createMap() {
           countryItem.deaths,
           countryItem.active,
           countryItem.recovered,
+        ],
+        [
+          countryItem.todayCases,
+          countryItem.todayDeaths,
+          countryItem.active,
+          countryItem.todayRecovered
+        ],
+        [
+          countryItem.todayCases/(countryItem.population/100000),
+          countryItem.todayDeaths/(countryItem.population/100000),
+          countryItem.active/(countryItem.population/100000),
+          countryItem.todayRecovered/(countryItem.population/100000)
         ]
       );
       return countryItem;
     });
   });
 
+  /*
+  const groupPerMillion = L.featureGroup();
+const groupTotalCases = L.featureGroup();
+const todayTotal = L.featureGroup();
+const toDayPerThousand = L.featureGroup();
+  */
+
   document
-    .querySelector(".switcher label")
+    .querySelector("#switch_count")
     .addEventListener("click", function() {
-      if (this.getAttribute("value") === "absolute") {
+      let switchdays = document.querySelector('#switch_day').getAttribute("value");
+      if ((this.getAttribute("value") === "absolute")&&(switchdays === "alldays")) {
         this.setAttribute("value", "permillion");
         mymap.removeLayer(groupTotalCases);
+        mymap.removeLayer(todayTotal);
+        mymap.removeLayer(toDayPerThousand);
         mymap.addLayer(groupPerMillion);
-      } else {
+      } else if ((this.getAttribute("value") === "permillion")&&(switchdays === "alldays")) {
         this.setAttribute("value", "absolute");
         mymap.removeLayer(groupPerMillion);
+        mymap.removeLayer(todayTotal);
+        mymap.removeLayer(toDayPerThousand);
         mymap.addLayer(groupTotalCases);
+      } else if ((this.getAttribute("value") === "absolute")&&(switchdays === "oneday")) {
+        this.setAttribute("value", "permillion");
+        mymap.removeLayer(groupTotalCases);
+        mymap.removeLayer(groupPerMillion);
+        mymap.removeLayer(toDayPerThousand);
+        mymap.addLayer(todayTotal); 
+      } else if ((this.getAttribute("value") === "permillion")&&(switchdays === "oneday")) {
+        this.setAttribute("value", "absolute");
+        mymap.removeLayer(groupPerMillion);
+        mymap.removeLayer(todayTotal);
+        mymap.removeLayer(groupTotalCases);
+        mymap.addLayer(toDayPerThousand);
       }
+    });
+
+  document.querySelector("#switch_day").addEventListener("click", function() {
+    let switchcount = document.querySelector('#switch_count').getAttribute("value");
+    if ((this.getAttribute("value") === "alldays")&&(switchcount === "absolute")) {
+      this.setAttribute("value", "oneday");
+      mymap.removeLayer(groupTotalCases);
+      mymap.removeLayer(groupPerMillion);
+      mymap.removeLayer(toDayPerThousand);
+      mymap.addLayer(todayTotal);
+    } else if ((this.getAttribute("value") === "oneday")&&(switchcount === "absolute")) {
+      this.setAttribute("value", "alldays");
+      mymap.removeLayer(groupPerMillion);
+      mymap.removeLayer(todayTotal);
+      mymap.removeLayer(toDayPerThousand);
+      mymap.addLayer(groupTotalCases);
+    } else if ((this.getAttribute("value") === "alldays")&&(switchcount === "permillion")) {
+      this.setAttribute("value", "oneday");
+      mymap.removeLayer(groupTotalCases);
+      mymap.removeLayer(todayTotal);
+      mymap.removeLayer(groupPerMillion);
+      mymap.addLayer(toDayPerThousand); 
+    } else if ((this.getAttribute("value") === "oneday")&&(switchcount === "permillion")) {
+      this.setAttribute("value", "alldays");
+      mymap.removeLayer(toDayPerThousand);
+      mymap.removeLayer(todayTotal);
+      mymap.removeLayer(groupTotalCases);
+      mymap.addLayer(groupPerMillion);
+    }
     });
 }
 
+// all cases all days
 const arrayOfSpots = [];
-function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal) {
+function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal, todayStatistic, todayPerThousand) {
   var circle = L.circle([lat, lon], {
     color: "red",
     fillColor: "#f03",
@@ -70,9 +138,7 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal) {
   localArr.push(circle);
   localArr.push(statistic);
   arrayOfSpots.push(localArr);
-
   circle.addEventListener("mouseover", function() {
-    //   mymap.setView([lat, lon], 5);
     var popup = L.popup()
       .setLatLng([lat, lon])
       .setContent(
@@ -89,7 +155,9 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal) {
   circle.addEventListener("click", function() {
     mymap.setView([lat, lon], 5);
   });
-  //mymap.addLayer(groupPerMillion);
+  mymap.addLayer(groupPerMillion);
+
+ // per 100 thousands all cases START
   var circle2 = L.circle([lat, lon], {
     color: "red",
     fillColor: "#f03",
@@ -100,9 +168,7 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal) {
   localArr2.push(circle2);
   localArr2.push(statisticTotal);
   arrayOfSpots.push(localArr2);
-
   circle2.addEventListener("mouseover", function() {
-    //  mymap.setView([lat, lon], 5);
     var popup = L.popup()
       .setLatLng([lat, lon])
       .setContent(
@@ -119,13 +185,83 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal) {
   circle2.addEventListener("click", function() {
     mymap.setView([lat, lon], 5);
   });
-  mymap.addLayer(groupTotalCases);
+  //mymap.addLayer(groupTotalCases);
+  // per 100 thousands all cases END
+
+ // Today all cases START
+  var circle3 = L.circle([lat, lon], {
+    color: "red",
+    fillColor: "#f03",
+    fillOpacity: 0.5,
+    radius: rad,
+  }).addTo(todayTotal);
+  const localArr3 = [];
+  localArr3.push(circle3);
+  localArr3.push(todayStatistic);
+  arrayOfSpots.push(localArr3);
+  circle3.addEventListener("mouseover", function() {
+    var popup = L.popup()
+      .setLatLng([lat, lon])
+      .setContent(
+        `<table>
+                    <caption style="font-size: 20px;">${countryName}</caption>
+                    <tr><th style="color: red">Cases: ${todayStatistic[0]}</th></tr>
+                    <tr><th style="color: orange">Active cases: ${todayStatistic[2]}</th></tr>
+                    <tr><th style="color: green">Recovered: ${todayStatistic[3]}</th></tr>
+                    <tr><th style="color: grey">Fatality ratio: ${todayStatistic[1]}</th></tr>
+                  </table>`
+      )
+      .openOn(mymap);
+  });
+  circle3.addEventListener("click", function() {
+    mymap.setView([lat, lon], 5);
+  });
+ // mymap.addLayer(todayTotal);
+  // Today all cases END
+
+  // Today per thousand START
+  var circle4 = L.circle([lat, lon], {
+    color: "red",
+    fillColor: "#f03",
+    fillOpacity: 0.5,
+    radius: rad,
+  }).addTo(toDayPerThousand);
+  const localArr4 = [];
+  localArr4.push(circle3);
+  localArr4.push(todayStatistic);
+  arrayOfSpots.push(localArr4);
+  circle4.addEventListener("mouseover", function() {
+    var popup = L.popup()
+      .setLatLng([lat, lon])
+      .setContent(
+        `<table>
+                    <caption style="font-size: 20px;">${countryName}</caption>
+                    <tr><th style="color: red">Cases: ${todayPerThousand[0]}</th></tr>
+                    <tr><th style="color: orange">Active cases: ${todayPerThousand[2]}</th></tr>
+                    <tr><th style="color: green">Recovered: ${todayPerThousand[3]}</th></tr>
+                    <tr><th style="color: grey">Fatality ratio: ${todayPerThousand[1]}</th></tr>
+                  </table>`
+      )
+      .openOn(mymap);
+  });
+  circle4.addEventListener("click", function() {
+    mymap.setView([lat, lon], 5);
+  });
+ // mymap.addLayer(toDayPerThousand);
+  // Today per thousand END
+  
 }
+
+
+
+
+
 
 const mapTabs = document.querySelectorAll(".tab__links");
 mapTabs.forEach((item) => {
   item.addEventListener("click", changeMapMode);
 });
+
 function changeMapMode() {
   let spotColor = "red";
   let statisticIdx = 0;

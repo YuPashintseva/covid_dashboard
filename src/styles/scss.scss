@@ -66,8 +66,14 @@ body {
 }
 
 /** SWITCHER **/
+.form-switch {
+  padding-top: 6px;
+  padding-left: 55px;
+}
+/*
 .switcher {
-  padding-bottom: 4px;
+  padding-top: 8px;
+  padding-left: 20px;
   display: flex;
   justify-content: left;
   &__million {
@@ -118,7 +124,7 @@ input:checked + label:after {
 
 label:active:after {
   width: 130px;
-}
+}*/
 
 // end map
 
