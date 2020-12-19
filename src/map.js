@@ -4,6 +4,7 @@ const groupTotalCases = L.featureGroup();
 const todayTotal = L.featureGroup();
 const toDayPerThousand = L.featureGroup();
 let mymap = "";
+const arrayOfSpots = [];
 export function createMap() {
   mymap = L.map("mapid").setView([51.505, -0.09], 3);
   L.tileLayer(
@@ -29,10 +30,10 @@ export function createMap() {
         defineRadius(countryItem.casesPerOneMillion),
         countryItem.country,
         [
-          countryItem.casesPerOneMillion / 10,
-          countryItem.deathsPerOneMillion / 10,
-          countryItem.activePerOneMillion / 10,
-          countryItem.recoveredPerOneMillion / 10,
+          Math.round(countryItem.casesPerOneMillion / 10),
+          Math.round(countryItem.deathsPerOneMillion / 10),
+          Math.round(countryItem.activePerOneMillion / 10),
+          Math.round(countryItem.recoveredPerOneMillion / 10),
         ],
         [
           countryItem.cases,
@@ -47,79 +48,18 @@ export function createMap() {
           countryItem.todayRecovered
         ],
         [
-          countryItem.todayCases/(countryItem.population/100000),
-          countryItem.todayDeaths/(countryItem.population/100000),
-          countryItem.active/(countryItem.population/100000),
-          countryItem.todayRecovered/(countryItem.population/100000)
+          Math.round(countryItem.todayCases/(countryItem.population/100000)),
+          Math.round(countryItem.todayDeaths/(countryItem.population/100000)),
+          Math.round(countryItem.active/(countryItem.population/100000)),
+          Math.round(countryItem.todayRecovered/(countryItem.population/100000))
         ]
       );
       return countryItem;
     });
   });
 
-  document
-    .querySelector("#switch_count")
-    .addEventListener("click", function() {
-      let switchdays = document.querySelector('#switch_day').getAttribute("value");
-      if ((this.getAttribute("value") === "absolute")&&(switchdays === "alldays")) {
-        this.setAttribute("value", "permillion");
-        mymap.removeLayer(groupTotalCases);
-        mymap.removeLayer(todayTotal);
-        mymap.removeLayer(toDayPerThousand);
-        mymap.addLayer(groupPerMillion);
-      } else if ((this.getAttribute("value") === "permillion")&&(switchdays === "alldays")) {
-        this.setAttribute("value", "absolute");
-        mymap.removeLayer(groupPerMillion);
-        mymap.removeLayer(todayTotal);
-        mymap.removeLayer(toDayPerThousand);
-        mymap.addLayer(groupTotalCases);
-      } else if ((this.getAttribute("value") === "absolute")&&(switchdays === "oneday")) {
-        this.setAttribute("value", "permillion");
-        mymap.removeLayer(groupTotalCases);
-        mymap.removeLayer(groupPerMillion);
-        mymap.removeLayer(toDayPerThousand);
-        mymap.addLayer(todayTotal); 
-      } else if ((this.getAttribute("value") === "permillion")&&(switchdays === "oneday")) {
-        this.setAttribute("value", "absolute");
-        mymap.removeLayer(groupPerMillion);
-        mymap.removeLayer(todayTotal);
-        mymap.removeLayer(groupTotalCases);
-        mymap.addLayer(toDayPerThousand);
-      }
-    });
-
-  document.querySelector("#switch_day").addEventListener("click", function() {
-    let switchcount = document.querySelector('#switch_count').getAttribute("value");
-    if ((this.getAttribute("value") === "alldays")&&(switchcount === "absolute")) {
-      this.setAttribute("value", "oneday");
-      mymap.removeLayer(groupTotalCases);
-      mymap.removeLayer(groupPerMillion);
-      mymap.removeLayer(toDayPerThousand);
-      mymap.addLayer(todayTotal);
-    } else if ((this.getAttribute("value") === "oneday")&&(switchcount === "absolute")) {
-      this.setAttribute("value", "alldays");
-      mymap.removeLayer(groupPerMillion);
-      mymap.removeLayer(todayTotal);
-      mymap.removeLayer(toDayPerThousand);
-      mymap.addLayer(groupTotalCases);
-    } else if ((this.getAttribute("value") === "alldays")&&(switchcount === "permillion")) {
-      this.setAttribute("value", "oneday");
-      mymap.removeLayer(groupTotalCases);
-      mymap.removeLayer(todayTotal);
-      mymap.removeLayer(groupPerMillion);
-      mymap.addLayer(toDayPerThousand); 
-    } else if ((this.getAttribute("value") === "oneday")&&(switchcount === "permillion")) {
-      this.setAttribute("value", "alldays");
-      mymap.removeLayer(toDayPerThousand);
-      mymap.removeLayer(todayTotal);
-      mymap.removeLayer(groupTotalCases);
-      mymap.addLayer(groupPerMillion);
-    }
-    });
-}
-
 // all cases all days
-const arrayOfSpots = [];
+
 function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal, todayStatistic, todayPerThousand1) {
   var circle = L.circle([lat, lon], {
     color: "red",
@@ -245,24 +185,53 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal, today
   
 }
 
+  const mapTabs = document.querySelectorAll(".tab__links");
+  mapTabs.forEach((item) => {
+    item.addEventListener("click", function() {
+      changeMapMode(this.id);
+    });
+  });
+}
 
-const mapTabs = document.querySelectorAll(".tab__links");
-mapTabs.forEach((item) => {
-  item.addEventListener("click", changeMapMode);
-});
+export function ChangeSwitcher(amount, days) {
+  if ((amount === "absolute") && (days === "alldays")) {
+    mymap.removeLayer(groupPerMillion);
+    mymap.removeLayer(todayTotal);
+    mymap.removeLayer(toDayPerThousand);
+    mymap.addLayer(groupTotalCases);
+  } else if ((amount === "permillion") && (days === "alldays")) {
+    mymap.removeLayer(groupTotalCases);
+    mymap.removeLayer(todayTotal);
+    mymap.removeLayer(toDayPerThousand);
+    mymap.addLayer(groupPerMillion);
+  } else if ((amount === "absolute") && (days === "oneday")) {
+    mymap.removeLayer(groupTotalCases);
+    mymap.removeLayer(groupPerMillion);
+    mymap.removeLayer(toDayPerThousand);
+    mymap.addLayer(todayTotal); 
+  } else if ((amount === "permillion") && (days === "oneday")) {
+    mymap.removeLayer(groupPerMillion);
+    mymap.removeLayer(todayTotal);
+    mymap.removeLayer(groupTotalCases);
+    mymap.addLayer(toDayPerThousand);
+  }
+}
 
-function changeMapMode() {
+export function changeMapMode(cases) {
   let spotColor = "red";
   let statisticIdx = 0;
-  if (this.id === "active_cases") {
+  if (cases === "active_cases") {
     spotColor = "orange";
     statisticIdx = 2;
-  } else if (this.id === "recover_cases") {
+  } else if (cases === "recover_cases") {
     spotColor = "green";
     statisticIdx = 3;
-  } else if (this.id === "fatal_cases") {
+  } else if (cases === "fatal_cases") {
     spotColor = "white";
     statisticIdx = 1;
+  } else  {
+    spotColor = "red";
+    statisticIdx = 0;
   }
 
   arrayOfSpots.forEach((spot) => {
