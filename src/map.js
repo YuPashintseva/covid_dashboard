@@ -57,13 +57,6 @@ export function createMap() {
     });
   });
 
-  /*
-  const groupPerMillion = L.featureGroup();
-const groupTotalCases = L.featureGroup();
-const todayTotal = L.featureGroup();
-const toDayPerThousand = L.featureGroup();
-  */
-
   document
     .querySelector("#switch_count")
     .addEventListener("click", function() {
@@ -127,7 +120,7 @@ const toDayPerThousand = L.featureGroup();
 
 // all cases all days
 const arrayOfSpots = [];
-function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal, todayStatistic, todayPerThousand) {
+function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal, todayStatistic, todayPerThousand1) {
   var circle = L.circle([lat, lon], {
     color: "red",
     fillColor: "#f03",
@@ -155,7 +148,7 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal, today
   circle.addEventListener("click", function() {
     mymap.setView([lat, lon], 5);
   });
-  mymap.addLayer(groupPerMillion);
+  //mymap.addLayer(groupPerMillion);
 
  // per 100 thousands all cases START
   var circle2 = L.circle([lat, lon], {
@@ -185,7 +178,7 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal, today
   circle2.addEventListener("click", function() {
     mymap.setView([lat, lon], 5);
   });
-  //mymap.addLayer(groupTotalCases);
+  mymap.addLayer(groupTotalCases);
   // per 100 thousands all cases END
 
  // Today all cases START
@@ -221,14 +214,14 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal, today
 
   // Today per thousand START
   var circle4 = L.circle([lat, lon], {
-    color: "red",
-    fillColor: "#f03",
+    color: "black",
+    fillColor: "black",
     fillOpacity: 0.5,
     radius: rad,
   }).addTo(toDayPerThousand);
   const localArr4 = [];
-  localArr4.push(circle3);
-  localArr4.push(todayStatistic);
+  localArr4.push(circle4);
+  localArr4.push(todayPerThousand1);
   arrayOfSpots.push(localArr4);
   circle4.addEventListener("mouseover", function() {
     var popup = L.popup()
@@ -236,10 +229,10 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal, today
       .setContent(
         `<table>
                     <caption style="font-size: 20px;">${countryName}</caption>
-                    <tr><th style="color: red">Cases: ${todayPerThousand[0]}</th></tr>
-                    <tr><th style="color: orange">Active cases: ${todayPerThousand[2]}</th></tr>
-                    <tr><th style="color: green">Recovered: ${todayPerThousand[3]}</th></tr>
-                    <tr><th style="color: grey">Fatality ratio: ${todayPerThousand[1]}</th></tr>
+                    <tr><th style="color: red">Cases: ${todayPerThousand1[0]}</th></tr>
+                    <tr><th style="color: orange">Active cases: ${todayPerThousand1[2]}</th></tr>
+                    <tr><th style="color: green">Recovered: ${todayPerThousand1[3]}</th></tr>
+                    <tr><th style="color: grey">Fatality ratio: ${todayPerThousand1[1]}</th></tr>
                   </table>`
       )
       .openOn(mymap);
@@ -251,10 +244,6 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal, today
   // Today per thousand END
   
 }
-
-
-
-
 
 
 const mapTabs = document.querySelectorAll(".tab__links");
@@ -281,6 +270,7 @@ function changeMapMode() {
       color: spotColor,
       fillColor: spotColor,
     });
+
     let radius = 0;
     spot[1][statisticIdx] !== null
       ? (radius = defineRadius(spot[1][statisticIdx]))
