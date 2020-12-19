@@ -52,26 +52,18 @@ class graph {
 
       let allCases = document.createElement('button');
       allCases.style.flexGrow = '1';
-      allCases.innerHTML = 'All Cases';
+      allCases.innerHTML = 'All Cases/Deaths/Recovered';
       allCases.addEventListener('click',()=>{
-        this.drawChart('allCases', this.country, this.proportion)
-        this.mode = 'All Cases';
-      })
-
-      let deaths = document.createElement('button');
-      deaths.style.flexGrow = '1';
-      deaths.innerHTML = 'Deaths';
-      deaths.addEventListener('click',()=>{
-        this.drawChart('deaths', this.country, this.proportion);
-        this.mode = 'Deaths';
-      })
-
-      let recovered = document.createElement('button');
-      recovered.style.flexGrow = '1';
-      recovered.innerHTML = 'Recovered';
-      recovered.addEventListener('click', ()=>{
-        this.drawChart('recovered', this.country, this.proportion);
-        this.mode ='Recovered';
+        if (this.mode === "allCases") {
+        this.drawChart('deaths', this.country, this.proportion)
+        this.mode = 'deaths';
+        } else if (this.mode === "deaths") {
+          this.drawChart('recovered', this.country, this.proportion)
+          this.mode = 'recovered';
+        } else {
+          this.drawChart('allCases', this.country, this.proportion)
+          this.mode = 'allCases';
+        }
       })
 
       let total = document.createElement('button');
@@ -94,8 +86,8 @@ class graph {
       
       
       butCont.appendChild(allCases);
-      butCont.appendChild(deaths);
-      butCont.appendChild(recovered);
+      //butCont.appendChild(deaths);
+      //butCont.appendChild(recovered);
       butCont.appendChild(total);
       butCont.appendChild(hundred);
 
