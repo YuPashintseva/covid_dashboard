@@ -1,2 +1,5 @@
-#Ignoring node modules
-node_modules
+node_modules/
+src/
+package.json
+package-lock.json
+webpack.config.js
