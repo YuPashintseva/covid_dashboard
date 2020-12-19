@@ -51,7 +51,7 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal) {
     arrayOfSpots.push(localArr);
 
     circle.addEventListener("mouseover", function() {
-      mymap.setView([lat, lon], 5);
+   //   mymap.setView([lat, lon], 5);
       var popup = L.popup()
       .setLatLng([lat, lon])
       .setContent(`<table>
@@ -62,6 +62,9 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal) {
                     <tr><th style="color: grey">Fatality ratio: ${statistic[1]}</th></tr>
                   </table>`)
       .openOn(mymap);
+    });
+    circle.addEventListener("click", function() {
+         mymap.setView([lat, lon], 5);
     });
     //mymap.addLayer(groupPerMillion);
     var circle2 = L.circle([lat, lon], {
@@ -76,7 +79,7 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal) {
     arrayOfSpots.push(localArr2);
 
     circle2.addEventListener("mouseover", function() {
-      mymap.setView([lat, lon], 5);
+    //  mymap.setView([lat, lon], 5);
       var popup = L.popup()
       .setLatLng([lat, lon])
       .setContent(`<table>
@@ -87,6 +90,9 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal) {
                     <tr><th style="color: grey">Fatality ratio: ${statisticTotal[1]}</th></tr>
                   </table>`)
       .openOn(mymap);
+    });
+    circle2.addEventListener("click", function() {
+        mymap.setView([lat, lon], 5);
     });
     mymap.addLayer(groupTotalCases);
 } 
