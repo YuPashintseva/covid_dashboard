@@ -7,12 +7,12 @@ class graph {
 
     }
     draw(mode, country, proportion) {
-        this.country = params.coutnry
-        if (this.mode !== mode||this.country !==country||this.proportion !==proportion ) {
+        this.country = params.coutnry;
+        if (this.mode !== mode||this.country !== country || this.proportion !== proportion ) {
           this.drawChart(mode,country, proportion);
           this.mode = mode;
           this.country = country;
-          this.proportion=proportion;
+          this.proportion = proportion;
         }
     
     }
@@ -21,14 +21,14 @@ class graph {
       
 
       this.createContainer();
-      //this.drawChart();
+      
       google.charts.load('current', {packages: ['corechart']});
       google.charts.setOnLoadCallback(() => this.drawChart(mode,country, proportion));
 
 
       this.mode = mode;
       this.country = country;
-      this.proportion=proportion;
+      this.proportion = proportion;
 
     }
 
@@ -48,7 +48,7 @@ class graph {
       butCont.style.height ='50px';
       butCont.style.width = '531px';
       butCont.style.display='inline-flex';
-      butCont.style.justifyContent="center";
+      butCont.style.justifyContent='center';
 
       let allCases = document.createElement('button');
       allCases.style.flexGrow = '1';
@@ -63,7 +63,7 @@ class graph {
       deaths.innerHTML = 'Deaths';
       deaths.addEventListener('click',()=>{
         this.drawChart('deaths', this.country, this.proportion);
-        this.mode = "Deaths";
+        this.mode = 'Deaths';
       })
 
       let recovered = document.createElement('button');
@@ -71,7 +71,7 @@ class graph {
       recovered.innerHTML = 'Recovered';
       recovered.addEventListener('click', ()=>{
         this.drawChart('recovered', this.country, this.proportion);
-        this.mode ="Recovered";
+        this.mode ='Recovered';
       })
 
       let total = document.createElement('button');
@@ -86,7 +86,7 @@ class graph {
       hundred.style.flexGrow = '1';
       hundred.innerHTML = `Per Hundred Thousand`;
       hundred.addEventListener('click', () =>{
-        this.drawChart(this.mode, this.country, "100");
+        this.drawChart(this.mode, this.country, '100');
         this.proportion = '100';
       })
      
@@ -152,10 +152,10 @@ class graph {
         entry[1] = entry[1]/((worldPopStart+ (everyDay*index))/100000);
         return entry;
       });
-      arrInside = arrChanged.slice();
+        arrInside = arrChanged.slice();
      } else {
         arrInside = arr.slice();
-      }
+    }
 //////////////////////////////////////
       arrInside.unshift(['date', 'number']);
      
@@ -166,8 +166,8 @@ class graph {
            
           width: 800,
           height: 400,
-          bar: {groupWidth: "95%"},
-          legend: { position: "none" },
+          bar: {groupWidth: '95%'},
+          legend: { position: 'none' },
          vAxis: {logScale: 'true'}
         };
 ///////////////////////////////////////////////////////////////////
