@@ -37,10 +37,7 @@ body {
 /** MAIN **/
 .map {
   width: 100%;
-  border: 3px solid grey;
-  border-top: none;
-  border-left: none;
-  border-right: none;
+  border: none;
   &__wrapper {
     display: flex;
     justify-content: center;
@@ -53,6 +50,10 @@ body {
   }
 }
 
+.country_flag {
+  max-width: 175px;
+}
+
 #mapid {
   height: 500px;
 }
@@ -60,10 +61,16 @@ body {
 .tab {
   &__links {
     font-size: 20px;
-    padding: 0 20px;
     border-top: none;
   }
 }
+
+.active_tab {
+  background-color: #113578;
+  color: white;
+}
+
+
 
 /** SWITCHER **/
 .form-switch {

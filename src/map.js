@@ -28,6 +28,7 @@ export function createMap() {
         countryItem.countryInfo.lat,
         countryItem.countryInfo.long,
         defineRadius(countryItem.casesPerOneMillion),
+        countryItem.countryInfo.flag,
         countryItem.country,
         [
           Math.round(countryItem.casesPerOneMillion / 10),
@@ -60,7 +61,7 @@ export function createMap() {
 
 // all cases all days
 
-function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal, todayStatistic, todayPerThousand1) {
+function makeCircle(lat, lon, rad, flag, countryName, statistic, statisticTotal, todayStatistic, todayPerThousand1) {
   var circle = L.circle([lat, lon], {
     color: "red",
     fillColor: "#f03",
@@ -75,8 +76,9 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal, today
     var popup = L.popup()
       .setLatLng([lat, lon])
       .setContent(
-        `<table>
-                    <caption style="font-size: 20px;">${countryName}</caption>
+        `<div style="font-size: 20px;">${countryName}</div>
+         <img class="country_flag" src=${flag}>         
+                  <table>    
                     <tr><th style="color: red">Cases: ${statistic[0]}</th></tr>
                     <tr><th style="color: orange">Active cases: ${statistic[2]}</th></tr>
                     <tr><th style="color: green">Recovered: ${statistic[3]}</th></tr>
@@ -105,8 +107,9 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal, today
     var popup = L.popup()
       .setLatLng([lat, lon])
       .setContent(
-        `<table>
-                    <caption style="font-size: 20px;">${countryName}</caption>
+        `<div style="font-size: 20px;">${countryName}</div>
+         <img class="country_flag" src=${flag}>
+                  <table>
                     <tr><th style="color: red">Cases: ${statisticTotal[0]}</th></tr>
                     <tr><th style="color: orange">Active cases: ${statisticTotal[2]}</th></tr>
                     <tr><th style="color: green">Recovered: ${statisticTotal[3]}</th></tr>
@@ -136,8 +139,9 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal, today
     var popup = L.popup()
       .setLatLng([lat, lon])
       .setContent(
-        `<table>
-                    <caption style="font-size: 20px;">${countryName}</caption>
+        `<div style="font-size: 20px;">${countryName}</div>
+         <img class="country_flag" src=${flag}>
+                  <table>
                     <tr><th style="color: red">Cases: ${todayStatistic[0]}</th></tr>
                     <tr><th style="color: orange">Active cases: ${todayStatistic[2]}</th></tr>
                     <tr><th style="color: green">Recovered: ${todayStatistic[3]}</th></tr>
@@ -167,12 +171,14 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal, today
     var popup = L.popup()
       .setLatLng([lat, lon])
       .setContent(
-        `<table>
-                    <caption style="font-size: 20px;">${countryName}</caption>
+        `<div style="font-size: 20px;">${countryName}</div>
+         <img class="country_flag" src=${flag}>
+                  <table>
                     <tr><th style="color: red">Cases: ${todayPerThousand1[0]}</th></tr>
                     <tr><th style="color: orange">Active cases: ${todayPerThousand1[2]}</th></tr>
                     <tr><th style="color: green">Recovered: ${todayPerThousand1[3]}</th></tr>
                     <tr><th style="color: grey">Fatality ratio: ${todayPerThousand1[1]}</th></tr>
+
                   </table>`
       )
       .openOn(mymap);
@@ -182,6 +188,7 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal, today
   });
  // mymap.addLayer(toDayPerThousand);
   // Today per thousand END
+  changeMapMode("total_cases");
   
 }
 
@@ -226,12 +233,21 @@ export function changeMapMode(cases) {
   } else if (cases === "recover_cases") {
     spotColor = "green";
     statisticIdx = 3;
+    document.querySelector('#recover_cases').className = "tab__links active_tab";
+    document.querySelector('#fatal_cases').className = "tab__links";
+    document.querySelector('#total_cases').className = "tab__links";
   } else if (cases === "fatal_cases") {
     spotColor = "white";
     statisticIdx = 1;
+    document.querySelector('#recover_cases').className = "tab__links";
+    document.querySelector('#fatal_cases').className = "tab__links active_tab";
+    document.querySelector('#total_cases').className = "tab__links";
   } else  {
     spotColor = "red";
     statisticIdx = 0;
+    document.querySelector('#recover_cases').className = "tab__links";
+    document.querySelector('#fatal_cases').className = "tab__links";
+    document.querySelector('#total_cases').className = "tab__links active_tab";
   }
 
   arrayOfSpots.forEach((spot) => {
@@ -273,3 +289,4 @@ function defineRadius(cases) {
   }
   return radius;
 }
+
