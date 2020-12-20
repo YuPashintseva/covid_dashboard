@@ -1,7 +1,7 @@
 import "bootstrap";
 import "./styles/scss.scss";
 import "./graphic.js";
-import { createMap, ChangeSwitcher, changeMapMode } from "./map";
+import { createMap, ChangeSwitcher, changeMapMode, NavigateToPoint } from "./map";
 createMap();
 
 //
@@ -235,8 +235,15 @@ document.querySelector("#switch_day").addEventListener("click", function() {
   let switchcount = document.querySelector('#switch_count').getAttribute("value");
   ChangeSwitcher(switchcount, this.getAttribute("value"));
 });
-// FOR TOP SWITCHER END
+// FOR TOP SWITCHER END 
 
 // FOR DEFAULT MAP MODE START
-changeMapMode("recover_cases");
+//changeMapMode('active_cases');
+//changeMapMode('recover_cases');
+//changeMapMode('fatal_cases');
+//changeMapMode('total_cases');
 // FOR DEFAULT MAP MODE END
+
+// FOR NAVIGATE ON MAP
+// 33 - latitude, 65 - longitude
+//NavigateToPoint(33,65);

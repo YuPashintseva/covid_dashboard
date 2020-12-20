@@ -88,7 +88,7 @@ function makeCircle(lat, lon, rad, flag, countryName, statistic, statisticTotal,
       .openOn(mymap);
   });
   circle.addEventListener("click", function() {
-    mymap.setView([lat, lon], 5);
+    NavigateToPoint(lat, lon);
   });
   //mymap.addLayer(groupPerMillion);
 
@@ -119,7 +119,7 @@ function makeCircle(lat, lon, rad, flag, countryName, statistic, statisticTotal,
       .openOn(mymap);
   });
   circle2.addEventListener("click", function() {
-    mymap.setView([lat, lon], 5);
+    NavigateToPoint(lat, lon);
   });
   mymap.addLayer(groupTotalCases);
   // per 100 thousands all cases END
@@ -151,7 +151,7 @@ function makeCircle(lat, lon, rad, flag, countryName, statistic, statisticTotal,
       .openOn(mymap);
   });
   circle3.addEventListener("click", function() {
-    mymap.setView([lat, lon], 5);
+    NavigateToPoint(lat, lon);
   });
  // mymap.addLayer(todayTotal);
   // Today all cases END
@@ -184,7 +184,7 @@ function makeCircle(lat, lon, rad, flag, countryName, statistic, statisticTotal,
       .openOn(mymap);
   });
   circle4.addEventListener("click", function() {
-    mymap.setView([lat, lon], 5);
+    NavigateToPoint(lat, lon);
   });
  // mymap.addLayer(toDayPerThousand);
   // Today per thousand END
@@ -289,4 +289,7 @@ function defineRadius(cases) {
   }
   return radius;
 }
-
+ 
+export function NavigateToPoint(lat, lon) {
+  mymap.setView([lat, lon], 5);
+}
