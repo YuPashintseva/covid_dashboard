@@ -18,11 +18,11 @@
     />
     <link rel="stylesheet" href="./leaflet/leaflet.css" />
     <script src="./leaflet/leaflet.js"></script>
-    <script src="./leaflet_bookmarks/L.Control.Bookmarks.min.js"></script>
+    <!--<script src="./leaflet_bookmarks/L.Control.Bookmarks.min.js"></script>
     <link
       rel="stylesheet"
       href="../covid_dashboard/leaflet_bookmarks/leaflet.bookmarks.css"
-    />
+    />-->
     <title>COVID-19 Dashboard</title>
   </head>
   <body>
@@ -67,19 +67,10 @@
             <!-- Map -->
             <div class="map__wrapper">
               <div class="map">
-                <div class="switcher">
-                  <div class="switcher__total">Total</div>
-                  <input type="checkbox" id="switch" />
-                  <label for="switch" value="absolute">Toggle</label>
-                  <div class="switcher__million">Per 100 thousands</div>
-                </div>
                 <div id="mapid"></div>
                 <div class="tab">
-                  <button class="tab__links" id="total_cases">
+                  <button class="tab__links active_tab" id="total_cases">
                     Cumulative cases
-                  </button>
-                  <button class="tab__links" id="active_cases">
-                    Active cases
                   </button>
                   <button class="tab__links" id="recover_cases">
                     Recovered
@@ -110,13 +101,16 @@
                   <a class="nav-link" href="#">Recovered</a>
                 </li>
                 <li class="nav-item">
-                  <a
-                    class="nav-link disabled"
-                    href="#"
-                    tabindex="-1"
-                    aria-disabled="true"
-                    >Disabled</a
-                  >
+                  <div class="form-check form-switch" id="switch_count" value="absolute">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                    <label class="form-check-label" for="flexSwitchCheckChecked">Per 100 thousands/All Cases</label>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <div class="form-check form-switch" id="switch_day" value="alldays">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                    <label class="form-check-label" for="flexSwitchCheckChecked">One Day/All Days</label>
+                  </div>
                 </li>
               </ul>
               <!-- CASES -->
@@ -130,30 +124,6 @@
                 />
                 <span class="cases__title">Cases by Country</span>
                 <div class="cases__global">0</div>
-                <div class="form-check form-switch">
-                  <div class="form-check form-switch">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="flexSwitchCheckDefault"
-                    />
-                    <label class="form-check-label" for="flexSwitchCheckDefault"
-                      >Total / Last Day Cases</label
-                    >
-                  </div>
-                </div>
-                <div class="form-check form-switch">
-                  <div class="form-check form-switch">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="flexSwitchCheckDefault"
-                    />
-                    <label class="form-check-label" for="flexSwitchCheckDefault"
-                      >Total / Last Day 100K pop</label
-                    >
-                  </div>
-                </div>
                 <div class="dropdown">
                   <button
                     class="btn btn-outline-dark dropdown-toggle"
@@ -205,30 +175,6 @@
                 />
                 <span class="deaths__title">Global Deaths</span>
                 <div class="deaths__global">0</div>
-                <div class="form-check form-switch">
-                  <div class="form-check form-switch">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="flexSwitchCheckDefault"
-                    />
-                    <label class="form-check-label" for="flexSwitchCheckDefault"
-                      >Total / Last Day Cases</label
-                    >
-                  </div>
-                </div>
-                <div class="form-check form-switch">
-                  <div class="form-check form-switch">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="flexSwitchCheckDefault"
-                    />
-                    <label class="form-check-label" for="flexSwitchCheckDefault"
-                      >Total / Last Day 100K pop</label
-                    >
-                  </div>
-                </div>
                 <div class="dropdown">
                   <button
                     class="btn btn-outline-dark dropdown-toggle"
@@ -280,30 +226,6 @@
                 />
                 <span class="recovered__title">Recovered</span>
                 <div class="recovered__global">0</div>
-                <div class="form-check form-switch">
-                  <div class="form-check form-switch">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="flexSwitchCheckDefault"
-                    />
-                    <label class="form-check-label" for="flexSwitchCheckDefault"
-                      >Total / Last Day Cases</label
-                    >
-                  </div>
-                </div>
-                <div class="form-check form-switch">
-                  <div class="form-check form-switch">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="flexSwitchCheckDefault"
-                    />
-                    <label class="form-check-label" for="flexSwitchCheckDefault"
-                      >Total / Last Day 100K pop</label
-                    >
-                  </div>
-                </div>
                 <div class="dropdown">
                   <button
                     class="btn btn-outline-dark dropdown-toggle"

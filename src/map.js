@@ -1,9 +1,12 @@
 import { getTotalByAllCountries } from "./api";
 const groupPerMillion = L.featureGroup();
 const groupTotalCases = L.featureGroup();
+const todayTotal = L.featureGroup();
+const toDayPerThousand = L.featureGroup();
 let mymap = "";
+const arrayOfSpots = [];
 export function createMap() {
-  mymap = L.map("mapid").setView([51.505, -0.09], 5);
+  mymap = L.map("mapid").setView([51.505, -0.09], 3);
   L.tileLayer(
     "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
     {
@@ -25,41 +28,40 @@ export function createMap() {
         countryItem.countryInfo.lat,
         countryItem.countryInfo.long,
         defineRadius(countryItem.casesPerOneMillion),
+        countryItem.countryInfo.flag,
         countryItem.country,
         [
-          countryItem.casesPerOneMillion / 10,
-          countryItem.deathsPerOneMillion / 10,
-          countryItem.activePerOneMillion / 10,
-          countryItem.recoveredPerOneMillion / 10,
+          Math.round(countryItem.casesPerOneMillion / 10),
+          Math.round(countryItem.deathsPerOneMillion / 10),
+          Math.round(countryItem.activePerOneMillion / 10),
+          Math.round(countryItem.recoveredPerOneMillion / 10),
         ],
         [
           countryItem.cases,
           countryItem.deaths,
           countryItem.active,
           countryItem.recovered,
+        ],
+        [
+          countryItem.todayCases,
+          countryItem.todayDeaths,
+          countryItem.active,
+          countryItem.todayRecovered
+        ],
+        [
+          Math.round(countryItem.todayCases/(countryItem.population/100000)),
+          Math.round(countryItem.todayDeaths/(countryItem.population/100000)),
+          Math.round(countryItem.active/(countryItem.population/100000)),
+          Math.round(countryItem.todayRecovered/(countryItem.population/100000))
         ]
       );
       return countryItem;
     });
   });
 
-  document
-    .querySelector(".switcher label")
-    .addEventListener("click", function() {
-      if (this.getAttribute("value") === "absolute") {
-        this.setAttribute("value", "permillion");
-        mymap.removeLayer(groupTotalCases);
-        mymap.addLayer(groupPerMillion);
-      } else {
-        this.setAttribute("value", "absolute");
-        mymap.removeLayer(groupPerMillion);
-        mymap.addLayer(groupTotalCases);
-      }
-    });
-}
+// all cases all days
 
-const arrayOfSpots = [];
-function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal) {
+function makeCircle(lat, lon, rad, flag, countryName, statistic, statisticTotal, todayStatistic, todayPerThousand1) {
   var circle = L.circle([lat, lon], {
     color: "red",
     fillColor: "#f03",
@@ -70,14 +72,13 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal) {
   localArr.push(circle);
   localArr.push(statistic);
   arrayOfSpots.push(localArr);
-
   circle.addEventListener("mouseover", function() {
-    //   mymap.setView([lat, lon], 5);
     var popup = L.popup()
       .setLatLng([lat, lon])
       .setContent(
-        `<table>
-                    <caption style="font-size: 20px;">${countryName}</caption>
+        `<div style="font-size: 20px;">${countryName}</div>
+         <img class="country_flag" src=${flag}>         
+                  <table>    
                     <tr><th style="color: red">Cases: ${statistic[0]}</th></tr>
                     <tr><th style="color: orange">Active cases: ${statistic[2]}</th></tr>
                     <tr><th style="color: green">Recovered: ${statistic[3]}</th></tr>
@@ -90,6 +91,8 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal) {
     mymap.setView([lat, lon], 5);
   });
   //mymap.addLayer(groupPerMillion);
+
+ // per 100 thousands all cases START
   var circle2 = L.circle([lat, lon], {
     color: "red",
     fillColor: "#f03",
@@ -100,14 +103,13 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal) {
   localArr2.push(circle2);
   localArr2.push(statisticTotal);
   arrayOfSpots.push(localArr2);
-
   circle2.addEventListener("mouseover", function() {
-    //  mymap.setView([lat, lon], 5);
     var popup = L.popup()
       .setLatLng([lat, lon])
       .setContent(
-        `<table>
-                    <caption style="font-size: 20px;">${countryName}</caption>
+        `<div style="font-size: 20px;">${countryName}</div>
+         <img class="country_flag" src=${flag}>
+                  <table>
                     <tr><th style="color: red">Cases: ${statisticTotal[0]}</th></tr>
                     <tr><th style="color: orange">Active cases: ${statisticTotal[2]}</th></tr>
                     <tr><th style="color: green">Recovered: ${statisticTotal[3]}</th></tr>
@@ -120,24 +122,132 @@ function makeCircle(lat, lon, rad, countryName, statistic, statisticTotal) {
     mymap.setView([lat, lon], 5);
   });
   mymap.addLayer(groupTotalCases);
+  // per 100 thousands all cases END
+
+ // Today all cases START
+  var circle3 = L.circle([lat, lon], {
+    color: "red",
+    fillColor: "#f03",
+    fillOpacity: 0.5,
+    radius: rad,
+  }).addTo(todayTotal);
+  const localArr3 = [];
+  localArr3.push(circle3);
+  localArr3.push(todayStatistic);
+  arrayOfSpots.push(localArr3);
+  circle3.addEventListener("mouseover", function() {
+    var popup = L.popup()
+      .setLatLng([lat, lon])
+      .setContent(
+        `<div style="font-size: 20px;">${countryName}</div>
+         <img class="country_flag" src=${flag}>
+                  <table>
+                    <tr><th style="color: red">Cases: ${todayStatistic[0]}</th></tr>
+                    <tr><th style="color: orange">Active cases: ${todayStatistic[2]}</th></tr>
+                    <tr><th style="color: green">Recovered: ${todayStatistic[3]}</th></tr>
+                    <tr><th style="color: grey">Fatality ratio: ${todayStatistic[1]}</th></tr>
+                  </table>`
+      )
+      .openOn(mymap);
+  });
+  circle3.addEventListener("click", function() {
+    mymap.setView([lat, lon], 5);
+  });
+ // mymap.addLayer(todayTotal);
+  // Today all cases END
+
+  // Today per thousand START
+  var circle4 = L.circle([lat, lon], {
+    color: "black",
+    fillColor: "black",
+    fillOpacity: 0.5,
+    radius: rad,
+  }).addTo(toDayPerThousand);
+  const localArr4 = [];
+  localArr4.push(circle4);
+  localArr4.push(todayPerThousand1);
+  arrayOfSpots.push(localArr4);
+  circle4.addEventListener("mouseover", function() {
+    var popup = L.popup()
+      .setLatLng([lat, lon])
+      .setContent(
+        `<div style="font-size: 20px;">${countryName}</div>
+         <img class="country_flag" src=${flag}>
+                  <table>
+                    <tr><th style="color: red">Cases: ${todayPerThousand1[0]}</th></tr>
+                    <tr><th style="color: orange">Active cases: ${todayPerThousand1[2]}</th></tr>
+                    <tr><th style="color: green">Recovered: ${todayPerThousand1[3]}</th></tr>
+                    <tr><th style="color: grey">Fatality ratio: ${todayPerThousand1[1]}</th></tr>
+
+                  </table>`
+      )
+      .openOn(mymap);
+  });
+  circle4.addEventListener("click", function() {
+    mymap.setView([lat, lon], 5);
+  });
+ // mymap.addLayer(toDayPerThousand);
+  // Today per thousand END
+  changeMapMode("total_cases");
+  
 }
 
-const mapTabs = document.querySelectorAll(".tab__links");
-mapTabs.forEach((item) => {
-  item.addEventListener("click", changeMapMode);
-});
-function changeMapMode() {
+  const mapTabs = document.querySelectorAll(".tab__links");
+  mapTabs.forEach((item) => {
+    item.addEventListener("click", function() {
+      changeMapMode(this.id);
+    });
+  });
+}
+
+export function ChangeSwitcher(amount, days) {
+  if ((amount === "absolute") && (days === "alldays")) {
+    mymap.removeLayer(groupPerMillion);
+    mymap.removeLayer(todayTotal);
+    mymap.removeLayer(toDayPerThousand);
+    mymap.addLayer(groupTotalCases);
+  } else if ((amount === "permillion") && (days === "alldays")) {
+    mymap.removeLayer(groupTotalCases);
+    mymap.removeLayer(todayTotal);
+    mymap.removeLayer(toDayPerThousand);
+    mymap.addLayer(groupPerMillion);
+  } else if ((amount === "absolute") && (days === "oneday")) {
+    mymap.removeLayer(groupTotalCases);
+    mymap.removeLayer(groupPerMillion);
+    mymap.removeLayer(toDayPerThousand);
+    mymap.addLayer(todayTotal); 
+  } else if ((amount === "permillion") && (days === "oneday")) {
+    mymap.removeLayer(groupPerMillion);
+    mymap.removeLayer(todayTotal);
+    mymap.removeLayer(groupTotalCases);
+    mymap.addLayer(toDayPerThousand);
+  }
+}
+
+export function changeMapMode(cases) {
   let spotColor = "red";
   let statisticIdx = 0;
-  if (this.id === "active_cases") {
+  if (cases === "active_cases") {
     spotColor = "orange";
     statisticIdx = 2;
-  } else if (this.id === "recover_cases") {
+  } else if (cases === "recover_cases") {
     spotColor = "green";
     statisticIdx = 3;
-  } else if (this.id === "fatal_cases") {
+    document.querySelector('#recover_cases').className = "tab__links active_tab";
+    document.querySelector('#fatal_cases').className = "tab__links";
+    document.querySelector('#total_cases').className = "tab__links";
+  } else if (cases === "fatal_cases") {
     spotColor = "white";
     statisticIdx = 1;
+    document.querySelector('#recover_cases').className = "tab__links";
+    document.querySelector('#fatal_cases').className = "tab__links active_tab";
+    document.querySelector('#total_cases').className = "tab__links";
+  } else  {
+    spotColor = "red";
+    statisticIdx = 0;
+    document.querySelector('#recover_cases').className = "tab__links";
+    document.querySelector('#fatal_cases').className = "tab__links";
+    document.querySelector('#total_cases').className = "tab__links active_tab";
   }
 
   arrayOfSpots.forEach((spot) => {
@@ -145,6 +255,7 @@ function changeMapMode() {
       color: spotColor,
       fillColor: spotColor,
     });
+
     let radius = 0;
     spot[1][statisticIdx] !== null
       ? (radius = defineRadius(spot[1][statisticIdx]))
@@ -178,3 +289,4 @@ function defineRadius(cases) {
   }
   return radius;
 }
+

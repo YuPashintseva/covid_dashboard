@@ -1,7 +1,7 @@
 import "bootstrap";
 import "./styles/scss.scss";
 import "./graphic.js";
-import { createMap } from "./map";
+import { createMap, ChangeSwitcher, changeMapMode } from "./map";
 createMap();
 
 //
@@ -213,3 +213,30 @@ document.querySelectorAll(".fullscreen").forEach((element) => {
 });
 
 getCasesDeathsRecoverd();
+
+
+// FOR TOP SWITCHER START
+document.querySelector("#switch_count").addEventListener("click", function() {
+  if (this.getAttribute("value") === "absolute") {
+    this.setAttribute("value", "permillion");
+  } else {
+    this.setAttribute("value", "absolute");
+  }
+  let switchdays = document.querySelector('#switch_day').getAttribute("value");
+  ChangeSwitcher(this.getAttribute("value"), switchdays);
+});
+
+document.querySelector("#switch_day").addEventListener("click", function() {
+  if (this.getAttribute("value") === "alldays") {
+    this.setAttribute("value", "oneday");
+  } else {
+    this.setAttribute("value", "alldays");
+  }
+  let switchcount = document.querySelector('#switch_count').getAttribute("value");
+  ChangeSwitcher(switchcount, this.getAttribute("value"));
+});
+// FOR TOP SWITCHER END
+
+// FOR DEFAULT MAP MODE START
+changeMapMode("recover_cases");
+// FOR DEFAULT MAP MODE END
