@@ -38,13 +38,13 @@ class graph {
   createContainer() {
     let cont = document.createElement("div");
     cont.setAttribute("id", "columnchart_values");
-    cont.style.width = "900px";
-    cont.style.height = "400px";
+    //cont.style.width = "900px";
+    //cont.style.height = "400px";
     let butCont = document.createElement("div");
     butCont.style.position = "absolute";
-    butCont.style.left = "136px";
+    //butCont.style.left = "136px";
     butCont.style.height = "50px";
-    butCont.style.width = "531px";
+    //butCont.style.width = "531px";
     butCont.style.display = "inline-flex";
     butCont.style.justifyContent = "center";
 
@@ -74,7 +74,7 @@ class graph {
 
     let hundred = document.createElement("button");
     hundred.style.flexGrow = "1";
-    hundred.innerHTML = `Per Hundred Thousand`;
+    hundred.innerHTML = `Per 100 000`;
     hundred.addEventListener("click", () => {
       this.drawChart(this.mode, this.country, "100");
       this.proportion = "100";
@@ -154,8 +154,8 @@ class graph {
     var options = {
       title: `${this.country} Total number of cases by day from the beginning`,
 
-      width: 800,
-      height: 400,
+     // width: 800,
+      //height: 400,
       bar: { groupWidth: "95%" },
       legend: { position: "none" },
       vAxis: { logScale: "true" },
