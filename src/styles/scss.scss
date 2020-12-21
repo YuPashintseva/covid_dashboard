@@ -70,8 +70,6 @@ body {
   color: white;
 }
 
-
-
 /** SWITCHER **/
 .form-switch {
   padding-top: 6px;
@@ -186,6 +184,13 @@ label:active:after {
     overflow-x: none;
   }
 
+  &__total {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
   &__item {
     list-style-type: none;
   }
@@ -212,6 +217,13 @@ label:active:after {
     height: 47vh;
   }
 
+  &__total {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
   &__item {
     list-style-type: none;
   }
@@ -236,6 +248,13 @@ label:active:after {
     padding-inline-start: 0;
     overflow-y: scroll;
     height: 47vh;
+  }
+
+  &__total {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   &__item {
@@ -295,9 +314,7 @@ label:active:after {
 }
 
 .flag-img {
-  height: 16px;
-  width: 26px;
-  padding-right: 5px;
+  height: 32px;
 }
 
 @media (min-width: 576px) and (max-width: 767.98px) {

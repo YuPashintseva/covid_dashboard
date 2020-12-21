@@ -1,19 +1,31 @@
 import "bootstrap";
 import "./styles/scss.scss";
 import "./graphic.js";
-import { createMap, ChangeSwitcher, changeMapMode, NavigateToPoint } from "./map";
+import {
+  createMap,
+  ChangeSwitcher,
+  changeMapMode,
+  NavigateToPoint,
+} from "./map";
 createMap();
+
+//
 
 //
 const CASESLIST = document.querySelector(".cases__list");
 const DEATHSLIST = document.querySelector(".deaths__list");
 const RECOVEREDLIST = document.querySelector(".recovered__list");
+
 const CASESGLOBAL = document.querySelector(".cases__global");
 const DEATHSGLOBAL = document.querySelector(".deaths__global");
 const RECOVEREDGLOBAL = document.querySelector(".recovered__global");
+
 const CASESTITLE = document.querySelector(".cases__title");
 const DEATHSTITLE = document.querySelector(".deaths__title");
 const RECOVEREDTITLE = document.querySelector(".recovered__title");
+
+const CASESTABLEBODY = document.querySelector(".cases__table-body");
+
 const DATALISTOPTIONS = document.getElementById("datalistOptions");
 const FLAGIMG = document.querySelectorAll(".flag-img");
 //
@@ -21,63 +33,122 @@ const FLAGIMG = document.querySelectorAll(".flag-img");
 // CASES
 
 async function getCasesDeathsRecoverd() {
-  const url = `https://api.covid19api.com/summary`;
+  const url = `https://disease.sh/v3/covid-19/countries?yesterday=true&twoDaysAgo=false&sort=cases&allowNull=true`;
   const res = await fetch(url);
   const data = await res.json();
-
+  let globalCases = 0;
+  let globalDeaths = 0;
+  let globalRecovered = 0;
   let listCountry = ``;
   let listDeaths = ``;
   let listRecovered = ``;
   let listOptionValue = ``;
 
-  for (let i = 0; i < data.Countries.length; i += 1) {
-    listCountry += `<li class="list-group-item d-flex justify-content-between align-items-center cases__item"><span class="cases__country"><img class="flag-img" src="${getFlags(
-      data.Countries[i].Country
-    )}">${data.Countries[i].Country}</span>
-    <span class="cases__count badge badge-primary badge-pill">${data.Countries[
-      i
-    ].TotalConfirmed.toString().replace(
-      /(\d)(?=(\d\d\d)+([^\d]|$))/g,
-      "$1 "
-    )}</span></li>`;
+  let options = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  };
 
-    listOptionValue += `<option value="${data.Countries[i].Country}">`;
+  for (let i = 0; i < data.length; i += 1) {
+    globalCases += Number(data[i].cases);
+    globalDeaths += Number(data[i].deaths);
+    globalRecovered += Number(data[i].recovered);
 
-    listDeaths += `<li class="list-group-item d-flex justify-content-between align-items-center deaths__item"><span class="deaths__country">${
-      data.Countries[i].Country
-    }</span><span class="deaths__count badge badge-primary badge-pill ">${data.Countries[
-      i
-    ].TotalDeaths.toString().replace(
-      /(\d)(?=(\d\d\d)+([^\d]|$))/g,
-      "$1 "
-    )}</span></li>`;
+    listCountry += `<a href="javascript:void(0)" class="list-group-item list-group-item-action cases__item" aria-current="true">
+                      <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">${data[i].country}</h5>
+                        <span class="cases__count badge badge-warning text-dark fs-5 badge-pill">${Number(
+                          data[i].cases
+                        )
+                          .toString()
+                          .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ")}</span>
+                      </div>
+                      <p class="mb-1"><img src="${
+                        data[i].countryInfo.flag
+                      }" alt="${data[i].country}" class="flag-img">
+                      </p>
+                      <div class="d-flex w-100 justify-content-between"> 
+                      <small>Population: ${Number(data[i].population)
+                        .toString()
+                        .replace(
+                          /(?!null)(\d)(?=(\d\d\d)+([^\d]|$))/g,
+                          "$1 "
+                        )}</small>                        <small class="text-muted">${new Date(
+      data[i].updated
+    ).toLocaleString("en-US", options)}</small>
+                      </div>
+                      
 
-    listRecovered += `<li class="list-group-item d-flex justify-content-between align-items-center  recovered__item"><span class="recovered__country">${
-      data.Countries[i].Country
-    }</span><span class=" badge badge-primary badge-pill recovered__count">${data.Countries[
-      i
-    ].TotalRecovered.toString().replace(
-      /(\d)(?=(\d\d\d)+([^\d]|$))/g,
-      "$1 "
-    )}</span></li>`;
+                    </a>`;
+
+    // search
+    let mydata = new Date(data[i].updated);
+
+    //console.log(data[i].updated);
+    listOptionValue += `<option class="search__item" value="${data[i].country}">`;
+
+    // deaths
+    listDeaths += `<a href="javascript:void(0)" class="list-group-item list-group-item-action deaths__item" aria-current="true">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">${data[i].country}</h5>
+      <span class="cases__count badge badge-dark text-light fs-5 badge-pill">${Number(
+        data[i].deaths
+      )
+        .toString()
+        .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ")}</span>
+    </div>
+    <p class="mb-1"><img src="${data[i].countryInfo.flag}" alt="${
+      data[i].country
+    }" class="flag-img">
+    </p>
+    <div class="d-flex w-100 justify-content-between"> 
+                      <small>Population: ${Number(data[i].population)
+                        .toString()
+                        .replace(
+                          /(?!null)(\d)(?=(\d\d\d)+([^\d]|$))/g,
+                          "$1 "
+                        )}</small>                        <small class="text-muted">${new Date(
+      data[i].updated
+    ).toLocaleString("en-US", options)}</small>
+                      </div>
+  </a>`;
+
+    // recovered
+
+    listRecovered += `<a href="javascript:void(0)" class="list-group-item list-group-item-action recovered__item" aria-current="true">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">${data[i].country}</h5>
+      <span class="cases__count badge badge-success text-light fs-5 badge-pill">${Number(
+        data[i].recovered
+      )
+        .toString()
+        .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ")}</span>
+    </div>
+    <p class="mb-1"><img src="${data[i].countryInfo.flag}" alt="${
+      data[i].country
+    }" class="flag-img">
+    </p>
+    <div class="d-flex w-100 justify-content-between"> 
+                      <small>Population: ${Number(data[i].population)
+                        .toString()
+                        .replace(
+                          /(?!null)(\d)(?=(\d\d\d)+([^\d]|$))/g,
+                          "$1 "
+                        )}</small>                        <small class="text-muted text-end">${new Date(
+      data[i].updated
+    ).toLocaleString("en-US", options)}</small>
+                      </div>
+  </a>`;
   }
 
   CASESLIST.insertAdjacentHTML("beforeend", listCountry);
   DEATHSLIST.insertAdjacentHTML("beforeend", listDeaths);
   RECOVEREDLIST.insertAdjacentHTML("beforeend", listRecovered);
 
-  CASESGLOBAL.textContent = data.Global.TotalConfirmed.toString().replace(
-    /(\d)(?=(\d\d\d)+([^\d]|$))/g,
-    "$1 "
-  );
-  DEATHSGLOBAL.textContent = data.Global.TotalDeaths.toString().replace(
-    /(\d)(?=(\d\d\d)+([^\d]|$))/g,
-    "$1 "
-  );
-  RECOVEREDGLOBAL.textContent = data.Global.TotalRecovered.toString().replace(
-    /(\d)(?=(\d\d\d)+([^\d]|$))/g,
-    "$1 "
-  );
   // CASES
   document.querySelectorAll(".cases__link").forEach((element, index, array) => {
     element.addEventListener("click", function() {
@@ -102,80 +173,45 @@ async function getCasesDeathsRecoverd() {
       }
     });
   });
-  // DEATHS
-  document
-    .querySelectorAll(".deaths__link")
-    .forEach((element, index, array) => {
-      element.addEventListener("click", function() {
-        if (index === 0) {
-          DEATHSTITLE.textContent = "Global Deaths";
-          DEATHSGLOBAL.textContent = data.Global.TotalDeaths.toString().replace(
-            /(\d)(?=(\d\d\d)+([^\d]|$))/g,
-            "$1 "
-          );
-        } else if (index === 1) {
-          DEATHSTITLE.textContent = "Last Day Deaths";
-          DEATHSGLOBAL.textContent = data.Global.NewDeaths.toString().replace(
-            /(\d)(?=(\d\d\d)+([^\d]|$))/g,
-            "$1 "
-          );
-        } else if (index === 2) {
-          DEATHSTITLE.textContent = "Total 100K pop";
 
-          DEATHSGLOBAL.textContent = "формула";
-        } else if (index === 3) {
-          DEATHSTITLE.textContent = "Last Day 100K pop";
-
-          DEATHSGLOBAL.textContent = "формула";
-        }
-      });
-    });
-  // RECOVERED
-  document
-    .querySelectorAll(".recovered__link")
-    .forEach((element, index, array) => {
-      element.addEventListener("click", function() {
-        if (index === 0) {
-          RECOVEREDTITLE.textContent = "Recovered";
-          RECOVEREDGLOBAL.textContent = data.Global.TotalRecovered.toString().replace(
-            /(\d)(?=(\d\d\d)+([^\d]|$))/g,
-            "$1 "
-          );
-        } else if (index === 1) {
-          RECOVEREDTITLE.textContent = "Last Day Recovered";
-          RECOVEREDGLOBAL.textContent = data.Global.NewRecovered.toString().replace(
-            /(\d)(?=(\d\d\d)+([^\d]|$))/g,
-            "$1 "
-          );
-        } else if (index === 2) {
-          RECOVEREDTITLE.textContent = "Total 100K pop";
-          RECOVEREDGLOBAL.textContent = "формула";
-        } else if (index === 3) {
-          RECOVEREDTITLE.textContent = "Last Day 100K pop";
-          RECOVEREDGLOBAL.textContent = "формула";
-        }
-      });
-    });
   // DATA LIST OPTIONS
-
   DATALISTOPTIONS.insertAdjacentHTML("beforeend", listOptionValue);
-}
 
-// FLAGS
-async function getFlags(country) {
-  const urlFlag = `https://restcountries.eu/rest/v2/all?fields=name;population;flag`;
-  const resFlag = await fetch(urlFlag);
-  const dataFlag = await resFlag.json();
+  CASESGLOBAL.textContent = globalCases
+    .toString()
+    .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+  DEATHSGLOBAL.textContent = globalDeaths
+    .toString()
+    .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+  RECOVEREDGLOBAL.textContent = globalRecovered
+    .toString()
+    .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
 
-  dataFlag.forEach((element) => {
-    if (element.name === country) {
-      return element.flag;
-      //console.log(element.flag);
-    }
+  // CASES ITEM CLICK
+  document.querySelectorAll(".cases__item").forEach((element) => {
+    element.addEventListener("click", function() {
+      console.log(this.querySelector(".mb-1").textContent);
+      alert(this.querySelector(".mb-1").textContent);
+    });
+  });
+
+  // DEATHS ITEM CLICK
+  document.querySelectorAll(".deaths__item").forEach((element) => {
+    element.addEventListener("click", function() {
+      console.log(this.querySelector(".mb-1").textContent);
+      alert(this.querySelector(".mb-1").textContent);
+    });
+  });
+
+  // RECOVERED ITEM CLICK
+  document.querySelectorAll(".recovered__item").forEach((element) => {
+    element.addEventListener("click", function() {
+      console.log(this.querySelector(".mb-1").textContent);
+      alert(this.querySelector(".mb-1").textContent);
+    });
   });
 }
 
-getFlags();
 // FULLSCREEN
 let flagFull = true;
 document.querySelectorAll(".fullscreen").forEach((element) => {
@@ -214,7 +250,6 @@ document.querySelectorAll(".fullscreen").forEach((element) => {
 
 getCasesDeathsRecoverd();
 
-
 // FOR TOP SWITCHER START
 document.querySelector("#switch_count").addEventListener("click", function() {
   if (this.getAttribute("value") === "absolute") {
@@ -222,7 +257,7 @@ document.querySelector("#switch_count").addEventListener("click", function() {
   } else {
     this.setAttribute("value", "absolute");
   }
-  let switchdays = document.querySelector('#switch_day').getAttribute("value");
+  let switchdays = document.querySelector("#switch_day").getAttribute("value");
   ChangeSwitcher(this.getAttribute("value"), switchdays);
 });
 
@@ -232,10 +267,12 @@ document.querySelector("#switch_day").addEventListener("click", function() {
   } else {
     this.setAttribute("value", "alldays");
   }
-  let switchcount = document.querySelector('#switch_count').getAttribute("value");
+  let switchcount = document
+    .querySelector("#switch_count")
+    .getAttribute("value");
   ChangeSwitcher(switchcount, this.getAttribute("value"));
 });
-// FOR TOP SWITCHER END 
+// FOR TOP SWITCHER END
 
 // FOR DEFAULT MAP MODE START
 //changeMapMode('active_cases');
