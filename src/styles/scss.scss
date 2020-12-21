@@ -276,8 +276,12 @@ label:active:after {
 .main__graphic {
   height: 40vh;
   padding:0%;
+  margin:0%;
 }
-.graphic {
+#graphContainer {
+  padding:0%;
+  margin:0%;
+  max-width: 100%;
 }
 
 .fullscreen {

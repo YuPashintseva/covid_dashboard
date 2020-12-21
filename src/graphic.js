@@ -41,8 +41,8 @@ class graph {
     //cont.style.width = "900px";
     //cont.style.height = "400px";
     let butCont = document.createElement("div");
-    butCont.style.position = "absolute";
-    //butCont.style.left = "136px";
+    butCont.style.marginRight = "0px";
+    butCont.style.margin = "0px";
     butCont.style.height = "50px";
     //butCont.style.width = "531px";
     butCont.style.display = "inline-flex";
@@ -50,7 +50,7 @@ class graph {
 
     let allCases = document.createElement("button");
     allCases.style.flexGrow = "1";
-    allCases.innerHTML = "All Cases/Deaths/Recovered";
+    allCases.innerHTML = "Cases/Deaths\n/Recovered";
     allCases.addEventListener("click", () => {
       if (this.mode === "allCases") {
         this.drawChart("deaths", this.country, this.proportion);
@@ -74,7 +74,7 @@ class graph {
 
     let hundred = document.createElement("button");
     hundred.style.flexGrow = "1";
-    hundred.innerHTML = `Per 100 000`;
+    hundred.innerHTML = `Per 100th`;
     hundred.addEventListener("click", () => {
       this.drawChart(this.mode, this.country, "100");
       this.proportion = "100";
