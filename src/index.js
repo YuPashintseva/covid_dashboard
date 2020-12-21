@@ -212,6 +212,18 @@ async function getCasesDeathsRecoverd() {
   });
 }
 
+document.querySelector('#nav-home-tab').addEventListener("click", function() {
+  changeMapMode('total_cases');
+});
+
+document.querySelector('#nav-profile-tab').addEventListener("click", function() {
+  changeMapMode('fatal_cases');
+});
+
+document.querySelector('#nav-contact-tab').addEventListener("click", function() {
+  changeMapMode('recover_cases');
+});
+
 // FULLSCREEN
 let flagFull = true;
 document.querySelectorAll(".fullscreen").forEach((element) => {
