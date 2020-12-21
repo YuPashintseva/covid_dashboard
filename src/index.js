@@ -7,10 +7,12 @@ import {
   changeMapMode,
   NavigateToPoint,
 } from "./map";
+import  graph  from "./graphic.js";
 createMap();
 
 //
-
+const gr = new graph("allCases", "The World", "all");
+  gr.drawCheck("allCases", "The World", "all");
 //
 const CASESLIST = document.querySelector(".cases__list");
 const DEATHSLIST = document.querySelector(".deaths__list");
@@ -191,7 +193,8 @@ async function getCasesDeathsRecoverd() {
   document.querySelectorAll(".cases__item").forEach((element) => {
     element.addEventListener("click", function() {
       console.log(this.querySelector(".mb-1").textContent);
-      alert(this.querySelector(".mb-1").textContent);
+      let country = this.querySelector(".mb-1").textContent;
+      gr.drawCheck(gr.mode, country, gr.proportion);
     });
   });
 
@@ -199,7 +202,8 @@ async function getCasesDeathsRecoverd() {
   document.querySelectorAll(".deaths__item").forEach((element) => {
     element.addEventListener("click", function() {
       console.log(this.querySelector(".mb-1").textContent);
-      alert(this.querySelector(".mb-1").textContent);
+      let country = this.querySelector(".mb-1").textContent;
+      gr.drawCheck(gr.mode, country, gr.proportion);
     });
   });
 
@@ -207,21 +211,26 @@ async function getCasesDeathsRecoverd() {
   document.querySelectorAll(".recovered__item").forEach((element) => {
     element.addEventListener("click", function() {
       console.log(this.querySelector(".mb-1").textContent);
-      alert(this.querySelector(".mb-1").textContent);
+      let country = this.querySelector(".mb-1").textContent;
+      gr.drawCheck(gr.mode, country, gr.proportion);
     });
   });
 }
-
+//mode switchers
 document.querySelector('#nav-home-tab').addEventListener("click", function() {
   changeMapMode('total_cases');
+  
+  gr.drawCheck("allCases", gr.country, gr.proportion);
 });
 
 document.querySelector('#nav-profile-tab').addEventListener("click", function() {
   changeMapMode('fatal_cases');
+  gr.drawCheck("deaths", gr.country, gr.proportion);
 });
 
 document.querySelector('#nav-contact-tab').addEventListener("click", function() {
   changeMapMode('recover_cases');
+  gr.drawCheck("recovered", gr.country, gr.proportion);
 });
 
 // FULLSCREEN

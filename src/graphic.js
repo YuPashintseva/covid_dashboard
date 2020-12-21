@@ -5,7 +5,7 @@ class graph {
     this.mode = mode; //cases, deaths, recovered
   }
   draw(mode, country, proportion) {
-    this.country = params.coutnry;
+    this.country = params.country;
     if (
       this.mode !== mode ||
       this.country !== country ||
@@ -33,6 +33,7 @@ class graph {
   onChange() {
     this.callback(params);
     this.draw(params);
+    console.log("works")
   }
 
   createContainer() {
@@ -81,7 +82,9 @@ class graph {
     });
 
     let bigCont = document.getElementById("graphContainer");
-
+    while (bigCont.childNodes.length) {
+      bigCont.removeChild(bigCont.firstChild);
+    }
     butCont.appendChild(allCases);
     //butCont.appendChild(deaths);
     //butCont.appendChild(recovered);
@@ -192,8 +195,4 @@ class graph {
   }
 }
 
-window.onload = () => {
-  const gr = new graph("All Cases", "The World", "all");
-
-  gr.drawCheck("All Cases", "France", "all");
-};
+export default graph;
