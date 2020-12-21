@@ -60,7 +60,7 @@ async function getCasesDeathsRecoverd() {
 
     listCountry += `<a href="javascript:void(0)" class="list-group-item list-group-item-action cases__item" aria-current="true">
                       <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">${data[i].country}</h5>
+                        <h5 class="mb-1" lat=${data[i].countryInfo.lat} long=${data[i].countryInfo.long}>${data[i].country}</h5>
                         <span class="cases__count badge badge-warning text-dark fs-5 badge-pill">${Number(
                           data[i].cases
                         )
@@ -94,7 +94,7 @@ async function getCasesDeathsRecoverd() {
     // deaths
     listDeaths += `<a href="javascript:void(0)" class="list-group-item list-group-item-action deaths__item" aria-current="true">
     <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">${data[i].country}</h5>
+      <h5 class="mb-1"  lat=${data[i].countryInfo.lat} long=${data[i].countryInfo.long}>${data[i].country}</h5>
       <span class="cases__count badge badge-dark text-light fs-5 badge-pill">${Number(
         data[i].deaths
       )
@@ -121,7 +121,7 @@ async function getCasesDeathsRecoverd() {
 
     listRecovered += `<a href="javascript:void(0)" class="list-group-item list-group-item-action recovered__item" aria-current="true">
     <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">${data[i].country}</h5>
+      <h5 class="mb-1"  lat=${data[i].countryInfo.lat} long=${data[i].countryInfo.long}>${data[i].country}</h5>
       <span class="cases__count badge badge-success text-light fs-5 badge-pill">${Number(
         data[i].recovered
       )
@@ -190,8 +190,8 @@ async function getCasesDeathsRecoverd() {
   // CASES ITEM CLICK
   document.querySelectorAll(".cases__item").forEach((element) => {
     element.addEventListener("click", function() {
-      console.log(this.querySelector(".mb-1").textContent);
-      alert(this.querySelector(".mb-1").textContent);
+      NavigateToPoint(this.querySelector(".mb-1").getAttribute("lat"),this.querySelector(".mb-1").getAttribute("long"));
+      console.log(this.querySelector(".mb-1").getAttribute("lat"));
     });
   });
 
@@ -199,7 +199,6 @@ async function getCasesDeathsRecoverd() {
   document.querySelectorAll(".deaths__item").forEach((element) => {
     element.addEventListener("click", function() {
       console.log(this.querySelector(".mb-1").textContent);
-      alert(this.querySelector(".mb-1").textContent);
     });
   });
 
@@ -207,7 +206,6 @@ async function getCasesDeathsRecoverd() {
   document.querySelectorAll(".recovered__item").forEach((element) => {
     element.addEventListener("click", function() {
       console.log(this.querySelector(".mb-1").textContent);
-      alert(this.querySelector(".mb-1").textContent);
     });
   });
 }
@@ -296,3 +294,5 @@ document.querySelector("#switch_day").addEventListener("click", function() {
 // FOR NAVIGATE ON MAP
 // 33 - latitude, 65 - longitude
 //NavigateToPoint(33,65);
+
+
