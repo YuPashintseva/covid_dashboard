@@ -1,3 +1,4 @@
+import './index.js';
 class graph {
   constructor(mode, country, proportion, callback) {
     this.country = country;
@@ -18,6 +19,7 @@ class graph {
     }
   }
   drawCheck(mode, country, proportion) {
+   
     this.createContainer();
 
     google.charts.load("current", { packages: ["corechart"] });
@@ -46,7 +48,7 @@ class graph {
     butCont.style.margin = "0px";
     butCont.style.height = "50px";
     //butCont.style.width = "531px";
-    butCont.style.display = "inline-flex";
+    butCont.style.display = "flex";
     butCont.style.justifyContent = "center";
 
     let allCases = document.createElement("button");
@@ -55,6 +57,7 @@ class graph {
     allCases.addEventListener("click", () => {
       if (this.mode === "allCases") {
         this.drawChart("deaths", this.country, this.proportion);
+        
         this.mode = "deaths";
       } else if (this.mode === "deaths") {
         this.drawChart("recovered", this.country, this.proportion);
@@ -82,6 +85,7 @@ class graph {
     });
 
     let bigCont = document.getElementById("graphContainer");
+    
     while (bigCont.childNodes.length) {
       bigCont.removeChild(bigCont.firstChild);
     }

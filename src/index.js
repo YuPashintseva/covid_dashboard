@@ -13,6 +13,10 @@ createMap();
 //
 const gr = new graph("allCases", "The World", "all");
   gr.drawCheck("allCases", "The World", "all");
+
+  function onchange() {
+    gr.drawCheck("allCases", "The World", "all");
+  }
 //
 const CASESLIST = document.querySelector(".cases__list");
 const DEATHSLIST = document.querySelector(".deaths__list");
