@@ -66,7 +66,7 @@ class graph {
     let recovered =  document.querySelector('#nav-recovered');
 
     allCases.addEventListener("click", () => {
-      if (this.mode === "allCases") {
+      if (this.mode === "cases") {
         this.drawChart("deaths", this.country, this.proportion);
         arrTabs[0].classList.remove('active');
         arrTabs[1].classList.add('active');
@@ -83,13 +83,13 @@ class graph {
         recovered.classList.add('active','show');
         this.mode = "recovered";
       } else {
-        this.drawChart("allCases", this.country, this.proportion);
+        this.drawChart("cases", this.country, this.proportion);
         arrTabs[2].classList.remove('active');
         arrTabs[0].classList.add('active');
 
         recovered.classList.remove('active','show');
         cases.classList.add('active','show');
-        this.mode = "allCases";
+        this.mode = "cases";
       }
     });
 
@@ -169,7 +169,7 @@ class graph {
 
     if (mode === "deaths") {
       arr = Object.entries(obj.deaths);
-    } else if (mode === "allCases") {
+    } else if (mode === "cases") {
       arr = Object.entries(obj.cases);
     } else if (mode === "recovered") {
       arr = Object.entries(obj.recovered);
@@ -207,7 +207,7 @@ class graph {
     if (mode === "deaths") {
       options.title = `${this.country}: Total number of deaths`;
       options.colors = ["black"];
-    } else if (mode === "allCases") {
+    } else if (mode === "cases") {
       options.title = `${this.country}: All Cases Among the Whole Population`;
       options.colors = ["blue"];
     } else if (mode === "recovered") {
