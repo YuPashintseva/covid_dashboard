@@ -177,7 +177,7 @@ label:active:after {
 .cases {
   padding: 0;
   &__list {
-    height: 47vh;
+    height: 40vh;
     min-width: 240px;
     padding-inline-start: 0;
     overflow-y: scroll;
@@ -274,19 +274,23 @@ label:active:after {
 }
 
 .main__graphic {
-  height: 40vh;
+  height: 45vh;
   padding:0%;
   margin:0%;
 }
 #graphContainer {
   display:flex;
   flex-direction: column;
-  padding:0%;
+ // padding:0%;
   margin:0%;
   max-width: 100%;
   max-height: 100%;
 }
-
+#columnchart_values{
+  height:auto;
+  width:auto;
+  
+}
 .fullscreen {
   position: absolute;
   top: 0;

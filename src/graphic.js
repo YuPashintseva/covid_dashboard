@@ -46,7 +46,7 @@ class graph {
     let butCont = document.createElement("div");
     butCont.style.marginRight = "0px";
     butCont.style.margin = "0px";
-    butCont.style.height = "50px";
+    //butCont.style.height = "50px";
     //butCont.style.width = "531px";
     butCont.style.display = "flex";
     butCont.style.justifyContent = "center";
