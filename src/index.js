@@ -225,17 +225,17 @@ async function getCasesDeathsRecoverd() {
 }
 //mode switchers
 document.querySelector('#nav-home-tab').addEventListener("click", function() {
-  changeMapMode('total_cases');
+  changeMapMode('cases');
   gr.drawChart("allCases", gr.country, gr.proportion);
 });
 
 document.querySelector('#nav-profile-tab').addEventListener("click", function() {
-  changeMapMode('fatal_cases');
+  changeMapMode('deaths');
   gr.drawChart("deaths", gr.country, gr.proportion);
 });
 
 document.querySelector('#nav-contact-tab').addEventListener("click", function() {
-  changeMapMode('recover_cases');
+  changeMapMode('recovered');
   gr.drawChart("recovered", gr.country, gr.proportion);
 });
 
@@ -305,7 +305,7 @@ document.querySelector("#switch_day").addEventListener("click", function() {
 const mapTabs = document.querySelectorAll(".tab__links");
 mapTabs.forEach((item) => {
   item.addEventListener("click", function() {
-      if (this.id === 'fatal_cases') {
+      if (this.id === 'deaths') {
         gr.drawChart("deaths", gr.country, gr.proportion);
         document.querySelectorAll('.nav-link').forEach((item) => {
           if (item.getAttribute('href') === '#nav-deaths') {
@@ -323,7 +323,7 @@ mapTabs.forEach((item) => {
             item.className = "tab-pane fade";
           }
         })
-      } else if (this.id === 'recover_cases') {
+      } else if (this.id === 'recovered') {
         gr.drawChart("recovered", gr.country, gr.proportion);
         document.querySelectorAll('.nav-link').forEach((item) => {
           if (item.getAttribute('href') === '#nav-recovered') {
@@ -341,7 +341,7 @@ mapTabs.forEach((item) => {
             item.className = "tab-pane fade";
           }
         })
-      } else if (this.id === 'total_cases') {
+      } else if (this.id === 'cases') {
         gr.drawChart("allCases", gr.country, gr.proportion);
         document.querySelectorAll('.nav-link').forEach((item) => {
           if (item.getAttribute('href') === '#nav-cases') {
