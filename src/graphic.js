@@ -1,4 +1,8 @@
-import './index.js';
+import {
+  
+  ChangeSwitcher
+  
+} from "./map";
 class graph {
   constructor(mode, country, proportion, callback) {
     this.country = country;
@@ -94,6 +98,11 @@ class graph {
     total.innerHTML = `Among All Population`;
     total.addEventListener("click", () => {
       this.drawChart(this.mode, this.country, "all");
+      document.querySelector("#switch_count").setAttribute("value", "absolute");
+
+      let inp =  document.querySelector(".form-check-input");
+      inp.checked=true;
+      ChangeSwitcher('absolute', 'alldays');
       this.proportion = "all";
     });
 
@@ -102,6 +111,12 @@ class graph {
     hundred.innerHTML = `Per 100th`;
     hundred.addEventListener("click", () => {
       this.drawChart(this.mode, this.country, "100");
+
+      document.querySelector("#switch_count").setAttribute("value", "permillion");
+
+      let inp =  document.querySelector(".form-check-input");
+      inp.checked=false;
+      ChangeSwitcher('permillion', 'alldays');
       this.proportion = "100";
     });
 

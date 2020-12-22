@@ -279,8 +279,10 @@ getCasesDeathsRecoverd();
 document.querySelector("#switch_count").addEventListener("click", function() {
   if (this.getAttribute("value") === "absolute") {
     this.setAttribute("value", "permillion");
+    gr.drawCheck(gr.mode, gr.country, '100');
   } else {
     this.setAttribute("value", "absolute");
+    gr.drawCheck(gr.mode, gr.country, 'all');
   }
   let switchdays = document.querySelector("#switch_day").getAttribute("value");
   ChangeSwitcher(this.getAttribute("value"), switchdays);
@@ -297,6 +299,7 @@ document.querySelector("#switch_day").addEventListener("click", function() {
     .getAttribute("value");
   ChangeSwitcher(switchcount, this.getAttribute("value"));
 });
+
 // FOR TOP SWITCHER END
 
 // FOR DEFAULT MAP MODE START
