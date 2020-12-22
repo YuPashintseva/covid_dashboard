@@ -305,62 +305,23 @@ document.querySelector("#switch_day").addEventListener("click", function() {
 const mapTabs = document.querySelectorAll(".tab__links");
 mapTabs.forEach((item) => {
   item.addEventListener("click", function() {
-      if (this.id === 'deaths') {
-        gr.drawChart("deaths", gr.country, gr.proportion);
-        document.querySelectorAll('.nav-link').forEach((item) => {
-          if (item.getAttribute('href') === '#nav-deaths') {
-            item.className = "nav-link text-dark active";
-            item.setAttribute("aria-selected", true);
-          } else {
-            item.className = "nav-link text-dark";
-            item.setAttribute("aria-selected", false);
-          }
-        });
-        document.querySelectorAll('.tab-pane').forEach((item) => {
-          if (item.getAttribute('id') === 'nav-deaths') {
-            item.className = "tab-pane fade active show";
-          } else {
-            item.className = "tab-pane fade";
-          }
-        })
-      } else if (this.id === 'recovered') {
-        gr.drawChart("recovered", gr.country, gr.proportion);
-        document.querySelectorAll('.nav-link').forEach((item) => {
-          if (item.getAttribute('href') === '#nav-recovered') {
-            item.className = "nav-link text-dark active";
-            item.setAttribute("aria-selected", true);
-          } else {
-            item.className = "nav-link text-dark";
-            item.setAttribute("aria-selected", false);
-          }
-        });
-        document.querySelectorAll('.tab-pane').forEach((item) => {
-          if (item.getAttribute('id') === 'nav-recovered') {
-            item.className = "tab-pane fade active show";
-          } else {
-            item.className = "tab-pane fade";
-          }
-        })
-      } else if (this.id === 'cases') {
-        gr.drawChart("allCases", gr.country, gr.proportion);
-        document.querySelectorAll('.nav-link').forEach((item) => {
-          if (item.getAttribute('href') === '#nav-cases') {
-            item.className = "nav-link text-dark active";
-            item.setAttribute("aria-selected", true);
-          } else {
-            item.className = "nav-link text-dark";
-            item.setAttribute("aria-selected", false);
-          }
-        });
-        document.querySelectorAll('.tab-pane').forEach((item) => {
-          if (item.getAttribute('id') === 'nav-cases') {
-            item.className = "tab-pane fade active show";
-          } else {
-            item.className = "tab-pane fade";
-          }
-        });
+    document.querySelectorAll('.nav-link').forEach((item) => {
+      if (item.getAttribute('href') === `#nav-${this.id}`) {
+        item.className = "nav-link text-dark active";
+        item.setAttribute("aria-selected", true);
+      } else {
+        item.className = "nav-link text-dark";
+        item.setAttribute("aria-selected", false);
       }
-
+    });
+    document.querySelectorAll('.tab-pane').forEach((item) => {
+      if (item.getAttribute('id') === `nav-${this.id}`) {
+        item.className = "tab-pane fade active show";
+      } else {
+        item.className = "tab-pane fade";
+      }
+    })
+    gr.drawChart(this.id, gr.country, gr.proportion);
     changeMapMode(this.id);
   });
 });
