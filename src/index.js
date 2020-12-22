@@ -290,7 +290,7 @@ async function getCasesDeathsRecoverdOneDay() {
     element.addEventListener("click", function () {
       console.log(this.querySelector(".mb-1").textContent);
       let country = this.querySelector(".mb-1").textContent;
-      gr.drawCheck(gr.mode, country, gr.proportion);
+      gr.drawChart(gr.mode, country, gr.proportion);
       NavigateToCountry(country);
     });
   });
@@ -307,9 +307,9 @@ async function getCasesDeathsRecoverdOneDay() {
 }
 
 //mode switchers
-document.querySelector("#nav-home-tab").addEventListener("click", function () {
-  changeMapMode("cases");
-  gr.drawChart("allCases", gr.country, gr.proportion);
+document.querySelector('#nav-home-tab').addEventListener("click", function() {
+  changeMapMode('cases');
+  gr.drawChart("cases", gr.country, gr.proportion);
 });
 
 document
