@@ -53,7 +53,7 @@ module.exports = {
   devServer: {
     open: true,
     port: 4200,
-    hot: isDev,
+    liveReload: false,
   },
   plugins: [
     new HTMLWebpackPlugin({

@@ -1,6 +1,7 @@
 import {
   
-  ChangeSwitcher
+  ChangeSwitcher,
+  changeMapMode
   
 } from "./map";
 class graph {
@@ -70,25 +71,25 @@ class graph {
         this.drawChart("deaths", this.country, this.proportion);
         arrTabs[0].classList.remove('active');
         arrTabs[1].classList.add('active');
-
         cases.classList.remove('active','show');
         deaths.classList.add('active','show');
+        changeMapMode("deaths");
         this.mode = "deaths";
       } else if (this.mode === "deaths") {
         this.drawChart("recovered", this.country, this.proportion);
-        arrTabs[1].classList.remove('active');
+        arrTabs[1].classList.remove('active'); 
         arrTabs[2].classList.add('active');
-
         deaths.classList.remove('active','show');
         recovered.classList.add('active','show');
+        changeMapMode("recovered");
         this.mode = "recovered";
       } else {
         this.drawChart("cases", this.country, this.proportion);
         arrTabs[2].classList.remove('active');
         arrTabs[0].classList.add('active');
-
         recovered.classList.remove('active','show');
         cases.classList.add('active','show');
+        changeMapMode("cases");
         this.mode = "cases";
       }
     });
