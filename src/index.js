@@ -278,7 +278,7 @@ document.querySelectorAll(".fullscreen").forEach((element) => {
 getCasesDeathsRecoverd();
 
 // FOR TOP SWITCHER START
-document.querySelector("#switch_count").addEventListener("click", function() {
+document.querySelector("#flexSwitchCheckChecked").addEventListener("click", function() {
   if (this.getAttribute("value") === "absolute") {
     this.setAttribute("value", "permillion");
     gr.drawCheck(gr.mode, gr.country, '100');
@@ -297,7 +297,7 @@ document.querySelector("#switch_day").addEventListener("click", function() {
     this.setAttribute("value", "alldays");
   }
   let switchcount = document
-    .querySelector("#switch_count")
+    .querySelector("#flexSwitchCheckChecked")
     .getAttribute("value");
   ChangeSwitcher(switchcount, this.getAttribute("value"));
 });
