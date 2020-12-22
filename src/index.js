@@ -34,6 +34,8 @@ const CASESTABLEBODY = document.querySelector(".cases__table-body");
 
 const DATALISTOPTIONS = document.getElementById("datalistOptions");
 const FLAGIMG = document.querySelectorAll(".flag-img");
+let INITIAL_DATASET = [];
+const LASTDAY = "Last Day";
 //
 // OPTIONS OF DATE
 let options = {
@@ -51,13 +53,14 @@ function changeNumberAddSpace(n, symbol) {
     .replace(/(?!null)(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1${symbol}`);
 }
 
+
 // CREATE ARRAY OF LIST
 function convertToListItem(country, property, classItem, badgeColor) {
   return `<a href="javascript:void(0)" class="list-group-item list-group-item-action ${classItem}" aria-current="true">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">${country.country}</h5>
       <span class="cases__count badge ${badgeColor} text-light fs-5 badge-pill">${changeNumberAddSpace(
-    country[property],
+    country['displayValue' + property],
     " "
   )}</span>
     </div>
@@ -85,113 +88,9 @@ async function getDataBase() {
 
 async function getCasesDeathsRecoverd() {
   let data = await getDataBase();
-  let globalCases = 0;
-  let globalDeaths = 0;
-  let globalRecovered = 0;
-  let listOptionValue = ``;
-
-  // CLEAR LIST BLOCK
-  CASESLIST.innerHTML = "";
-  DEATHSLIST.innerHTML = "";
-  RECOVEREDLIST.innerHTML = "";
-  // ADD TITLE
-  CASESTITLE.textContent = "";
-  DEATHSTITLE.textContent = "";
-  RECOVEREDTITLE.textContent = "";
-
-  // CREATE CASES LIST
-  const casesArray = data
-    .sort((country1, country2) => {
-      return country1.cases < country2.cases ? 1 : -1;
-    })
-    .map((country) => {
-      return convertToListItem(
-        country,
-        "cases",
-        "cases__item",
-        "badge-warning"
-      );
-    })
-    .join(" ");
-
-  // CREATE DEATHS LIST
-  const deathsArray = data
-    .sort((country1, country2) => {
-      return country1.deaths < country2.deaths ? 1 : -1;
-    })
-    .map((country) => {
-      return convertToListItem(country, "deaths", "deaths__item", "badge-dark");
-    })
-    .join(" ");
-  // CREATE RECOVERED LIST
-  const recoveredArray = data
-    .sort((country1, country2) => {
-      return country1.recovered < country2.recovered ? 1 : -1;
-    })
-    .map((country) => {
-      return convertToListItem(
-        country,
-        "recovered",
-        "recovered__item",
-        "badge-success"
-      );
-    })
-    .join(" ");
-  //// INSERT IN HTML DOC
-  CASESLIST.insertAdjacentHTML("beforeend", casesArray);
-  DEATHSLIST.insertAdjacentHTML("beforeend", deathsArray);
-  RECOVEREDLIST.insertAdjacentHTML("beforeend", recoveredArray);
-
-  for (let i = 0; i < data.length; i += 1) {
-    // CALCULATE ALL CASES IN EVERY GROUP
-    globalCases += Number(data[i].cases);
-    globalDeaths += Number(data[i].deaths);
-    globalRecovered += Number(data[i].recovered);
-
-    // CREATE TAGS OPTION IN DATALIST
-    listOptionValue += `<option class="search__item" value="${data[i].country}">`;
-}
-    
-
-    // DATA LIST OPTIONS
-
-    // DATA LIST OPTIONS
-    DATALISTOPTIONS.insertAdjacentHTML("beforeend", listOptionValue);
-
-    CASESGLOBAL.textContent = changeNumberAddSpace(globalCases, ",");
-    DEATHSGLOBAL.textContent = changeNumberAddSpace(globalDeaths, ",");
-    RECOVEREDGLOBAL.textContent = changeNumberAddSpace(globalRecovered, ",");
-
-    // CASES ITEM CLICK
-    document.querySelectorAll(".cases__item").forEach((element) => {
-      element.addEventListener("click", function () {
-        console.log(this.querySelector(".mb-1").textContent);
-        let country = this.querySelector(".mb-1").textContent;
-        gr.drawChart(gr.mode, country, gr.proportion);
-        NavigateToCountry(country);
-      });
-    });
-
-    // DEATHS ITEM CLICK
-    document.querySelectorAll(".deaths__item").forEach((element) => {
-      element.addEventListener("click", function () {
-        console.log(this.querySelector(".mb-1").textContent);
-        let country = this.querySelector(".mb-1").textContent;
-        gr.drawCheck(gr.mode, country, gr.proportion);
-        NavigateToCountry(country);
-      });
-    });
-
-    // RECOVERED ITEM CLICK
-    document.querySelectorAll(".recovered__item").forEach((element) => {
-      element.addEventListener("click", function () {
-        console.log(this.querySelector(".mb-1").textContent);
-        let country = this.querySelector(".mb-1").textContent;
-        gr.drawChart(gr.mode, country, gr.proportion);
-        NavigateToCountry(country);
-      });
-    });
-  
+  INITIAL_DATASET = data;
+  draw('', 'cases', 'absolute', 'alldays' );
+  return;
 }
 
 // Get for the one Day ***********************************************
@@ -418,3 +317,129 @@ mapTabs.forEach((item) => {
     changeMapMode(this.id);
   });
 });
+
+
+function draw(currentCountry, proportion, period) {
+
+  let data = INITIAL_DATASET.filter(country => {
+    return currentCountry ? country.country === currentCountry : true;
+  }).map(country=>{
+    if (proportion === 'absolute') {
+      country.displayValuecases = country.cases;
+      country.displayValuedeaths  = country.deaths;
+      country.displayValuerecovered  = country.recovered;
+    } else {
+      country.displayValuecases  = country.population ? Math.round(country.cases / (country.population / 100000)) : 0;
+      country.displayValuedeaths  = country.population  ?  Math.round(country.deaths / (country.population / 100000)): 0;
+      country.displayValuerecovered  = country.population  ?  Math.round(country.recovered / (country.population / 100000)) : 0;
+    }
+    return country;
+  });
+
+  let globalCases = 0;
+  let globalDeaths = 0;
+  let globalRecovered = 0;
+  let listOptionValue = ``;
+
+  // CLEAR LIST BLOCK
+  CASESLIST.innerHTML = "";
+  DEATHSLIST.innerHTML = "";
+  RECOVEREDLIST.innerHTML = "";
+  // ADD TITLE
+  CASESTITLE.textContent = "";
+  DEATHSTITLE.textContent = "";
+  RECOVEREDTITLE.textContent = "";
+
+  // CREATE CASES LIST
+  const casesArray = data
+    .sort((country1, country2) => {
+      return country1.displayValuecases < country2.displayValuecases ? 1 : -1;
+    })
+    .map((country) => {
+      return convertToListItem(
+        country,
+        "cases",
+        "cases__item",
+        "badge-warning"
+      );
+    })
+    .join(" ");
+
+  // CREATE DEATHS LIST
+  const deathsArray = data
+    .sort((country1, country2) => {
+      return country1.displayValuedeaths < country2.displayValuedeaths ? 1 : -1;
+    })
+    .map((country) => {
+      return convertToListItem(country, "deaths", "deaths__item", "badge-dark");
+    })
+    .join(" ");
+  // CREATE RECOVERED LIST
+  const recoveredArray = data
+    .sort((country1, country2) => {
+      return country1.displayValuerecovered < country2.displayValuerecovered ? 1 : -1;
+    })
+    .map((country) => {
+      return convertToListItem(
+        country,
+        "recovered",
+        "recovered__item",
+        "badge-success"
+      );
+    })
+    .join(" ");
+  //// INSERT IN HTML DOC
+  CASESLIST.insertAdjacentHTML("beforeend", casesArray);
+  DEATHSLIST.insertAdjacentHTML("beforeend", deathsArray);
+  RECOVEREDLIST.insertAdjacentHTML("beforeend", recoveredArray);
+
+  for (let i = 0; i < data.length; i += 1) {
+    // CALCULATE ALL CASES IN EVERY GROUP
+    globalCases += Number(data[i].cases);
+    globalDeaths += Number(data[i].deaths);
+    globalRecovered += Number(data[i].recovered);
+
+    // CREATE TAGS OPTION IN DATALIST
+    listOptionValue += `<option class="search__item" value="${data[i].country}">`;
+}
+    
+
+    // DATA LIST OPTIONS
+
+    // DATA LIST OPTIONS
+    DATALISTOPTIONS.insertAdjacentHTML("beforeend", listOptionValue);
+
+    CASESGLOBAL.textContent = changeNumberAddSpace(globalCases, ",");
+    DEATHSGLOBAL.textContent = changeNumberAddSpace(globalDeaths, ",");
+    RECOVEREDGLOBAL.textContent = changeNumberAddSpace(globalRecovered, ",");
+
+    // CASES ITEM CLICK
+    document.querySelectorAll(".cases__item").forEach((element) => {
+      element.addEventListener("click", function () {
+        console.log(this.querySelector(".mb-1").textContent);
+        let country = this.querySelector(".mb-1").textContent;
+        gr.drawChart(gr.mode, country, gr.proportion);
+        NavigateToCountry(country);
+      });
+    });
+
+    // DEATHS ITEM CLICK
+    document.querySelectorAll(".deaths__item").forEach((element) => {
+      element.addEventListener("click", function () {
+        console.log(this.querySelector(".mb-1").textContent);
+        let country = this.querySelector(".mb-1").textContent;
+        gr.drawCheck(gr.mode, country, gr.proportion);
+        NavigateToCountry(country);
+      });
+    });
+
+    // RECOVERED ITEM CLICK
+    document.querySelectorAll(".recovered__item").forEach((element) => {
+      element.addEventListener("click", function () {
+        console.log(this.querySelector(".mb-1").textContent);
+        let country = this.querySelector(".mb-1").textContent;
+        gr.drawChart(gr.mode, country, gr.proportion);
+        NavigateToCountry(country);
+      });
+    });
+}
