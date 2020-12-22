@@ -54,16 +54,37 @@ class graph {
     let allCases = document.createElement("button");
     allCases.style.flexGrow = "1";
     allCases.innerHTML = "Cases/Deaths\n/Recovered";
+
+    //getting hold on the table
+    let arrTabs = document.querySelectorAll('.nav-link');
+    let cases =  document.querySelector('#nav-cases');
+    let deaths =  document.querySelector('#nav-deaths');
+    let recovered =  document.querySelector('#nav-recovered');
+
     allCases.addEventListener("click", () => {
       if (this.mode === "allCases") {
         this.drawChart("deaths", this.country, this.proportion);
-        
+        arrTabs[0].classList.remove('active');
+        arrTabs[1].classList.add('active');
+
+        cases.classList.remove('active','show');
+        deaths.classList.add('active','show');
         this.mode = "deaths";
       } else if (this.mode === "deaths") {
         this.drawChart("recovered", this.country, this.proportion);
+        arrTabs[1].classList.remove('active');
+        arrTabs[2].classList.add('active');
+
+        deaths.classList.remove('active','show');
+        recovered.classList.add('active','show');
         this.mode = "recovered";
       } else {
         this.drawChart("allCases", this.country, this.proportion);
+        arrTabs[2].classList.remove('active');
+        arrTabs[0].classList.add('active');
+
+        recovered.classList.remove('active','show');
+        cases.classList.add('active','show');
         this.mode = "allCases";
       }
     });
