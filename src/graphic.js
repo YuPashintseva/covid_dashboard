@@ -44,9 +44,9 @@ class graph {
     //cont.style.width = "900px";
     //cont.style.height = "400px";
     let butCont = document.createElement("div");
-    butCont.style.marginRight = "0px";
-    butCont.style.margin = "0px";
-    //butCont.style.height = "50px";
+    butCont.style.height = "20%";
+    butCont.style.maxWidth = "100%";
+    butCont.style.flexGrow = "1";
     //butCont.style.width = "531px";
     butCont.style.display = "flex";
     butCont.style.justifyContent = "center";

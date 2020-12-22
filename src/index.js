@@ -13,7 +13,7 @@ createMap();
 //
 const gr = new graph("allCases", "The World", "all");
   gr.drawCheck("allCases", "The World", "all");
-
+ window.onresize =() => gr.drawCheck(gr.mode, gr.country, gr.proportion);
   function onchange() {
     gr.drawCheck("allCases", "The World", "all");
   }
@@ -198,7 +198,7 @@ async function getCasesDeathsRecoverd() {
     element.addEventListener("click", function() {
       console.log(this.querySelector(".mb-1").textContent);
       let country = this.querySelector(".mb-1").textContent;
-      gr.drawCheck(gr.mode, country, gr.proportion);
+      gr.drawChart(gr.mode, country, gr.proportion);
     });
   });
 
