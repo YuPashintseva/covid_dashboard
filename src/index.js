@@ -216,7 +216,7 @@ async function getCasesDeathsRecoverd() {
     element.addEventListener("click", function() {
       console.log(this.querySelector(".mb-1").textContent);
       let country = this.querySelector(".mb-1").textContent;
-      gr.drawCheck(gr.mode, country, gr.proportion);
+      gr.drawChart(gr.mode, country, gr.proportion);
     });
   });
 }
@@ -224,17 +224,17 @@ async function getCasesDeathsRecoverd() {
 document.querySelector('#nav-home-tab').addEventListener("click", function() {
   changeMapMode('total_cases');
   
-  gr.drawCheck("allCases", gr.country, gr.proportion);
+  gr.drawChart("allCases", gr.country, gr.proportion);
 });
 
 document.querySelector('#nav-profile-tab').addEventListener("click", function() {
   changeMapMode('fatal_cases');
-  gr.drawCheck("deaths", gr.country, gr.proportion);
+  gr.drawChart("deaths", gr.country, gr.proportion);
 });
 
 document.querySelector('#nav-contact-tab').addEventListener("click", function() {
   changeMapMode('recover_cases');
-  gr.drawCheck("recovered", gr.country, gr.proportion);
+  gr.drawChart("recovered", gr.country, gr.proportion);
 });
 
 // FULLSCREEN
