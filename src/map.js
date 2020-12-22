@@ -190,16 +190,16 @@ function makeCircle(lat, lon, rad, flag, countryName, statistic, statisticTotal,
   });
  // mymap.addLayer(toDayPerThousand);
   // Today per thousand END
-  changeMapMode("total_cases");
+  changeMapMode("cases");
   
 }
 
-  const mapTabs = document.querySelectorAll(".tab__links");
+  /*const mapTabs = document.querySelectorAll(".tab__links");
   mapTabs.forEach((item) => {
     item.addEventListener("click", function() {
       changeMapMode(this.id);
     });
-  });
+  });*/
 }
 
 export function ChangeSwitcher(amount, days) {
@@ -232,24 +232,24 @@ export function changeMapMode(cases) {
   if (cases === "active_cases") {
     spotColor = "orange";
     statisticIdx = 2;
-  } else if (cases === "recover_cases") {
+  } else if (cases === "recovered") {
     spotColor = "green";
     statisticIdx = 3;
-    document.querySelector('#recover_cases').className = "tab__links active_tab";
-    document.querySelector('#fatal_cases').className = "tab__links";
-    document.querySelector('#total_cases').className = "tab__links";
-  } else if (cases === "fatal_cases") {
+    document.querySelector('#recovered').className = "tab__links active_tab";
+    document.querySelector('#deaths').className = "tab__links";
+    document.querySelector('#cases').className = "tab__links";
+  } else if (cases === "deaths") {
     spotColor = "white";
     statisticIdx = 1;
-    document.querySelector('#recover_cases').className = "tab__links";
-    document.querySelector('#fatal_cases').className = "tab__links active_tab";
-    document.querySelector('#total_cases').className = "tab__links";
+    document.querySelector('#recovered').className = "tab__links";
+    document.querySelector('#deaths').className = "tab__links active_tab";
+    document.querySelector('#cases').className = "tab__links";
   } else  {
-    spotColor = "red";
+    spotColor = "red"; 
     statisticIdx = 0;
-    document.querySelector('#recover_cases').className = "tab__links";
-    document.querySelector('#fatal_cases').className = "tab__links";
-    document.querySelector('#total_cases').className = "tab__links active_tab";
+    document.querySelector('#recovered').className = "tab__links";
+    document.querySelector('#deaths').className = "tab__links";
+    document.querySelector('#cases').className = "tab__links active_tab";
   }
 
   arrayOfSpots.forEach((spot) => {
