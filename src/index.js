@@ -6,6 +6,7 @@ import {
   ChangeSwitcher,
   changeMapMode,
   NavigateToCountry,
+  NavigateToDefault
 } from "./map";
 import graph from "./graphic.js";
 createMap();
@@ -418,3 +419,25 @@ mapTabs.forEach((item) => {
     changeMapMode(this.id);
   });
 });
+
+
+let inputs = document.querySelectorAll('input[list]');
+for (var i = 0; i < inputs.length; i++) {
+  inputs[i].addEventListener("change", function() {
+    var optionFound = false,
+    datalist = this.list;
+    for (var j = 0; j < datalist.options.length; j++) {
+      if (this.value == datalist.options[j].value) {
+        optionFound = true;
+        break;
+      }
+    }
+    if (optionFound) {
+      NavigateToCountry(this.value);
+      gr.drawChart(gr.mode, this.value, gr.proportion);
+    } else {
+      NavigateToDefault();
+    }
+  });
+}
+

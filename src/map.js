@@ -296,6 +296,10 @@ export function NavigateToPoint(lat, lon) {
   mymap.setView([lat, lon], 5);
 }
 
+export function NavigateToDefault() {
+  mymap.setView([51.505, -0.09], 3);
+}
+
 export function NavigateToCountry(name) {
   const coords = countryMap.get(name);
   if (coords.length > 0) {
