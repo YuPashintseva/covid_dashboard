@@ -137,6 +137,10 @@ class graph {
   }
 
   async drawChart(mode, country, proportion) {
+
+    this.mode = mode;
+    this.country = country;
+    this.proportion = proportion;
     let obj = {};
     let cumulativeUrl =
       "https://disease.sh/v3/covid-19/historical/all?lastdays=400";
