@@ -5,6 +5,7 @@ const todayTotal = L.featureGroup();
 const toDayPerThousand = L.featureGroup();
 let mymap = "";
 const arrayOfSpots = [];
+let countryMap = new Map();
 export function createMap() {
   mymap = L.map("mapid").setView([51.505, -0.09], 3);
   L.tileLayer(
@@ -24,6 +25,7 @@ export function createMap() {
   getTotalByAllCountries().then((data) => {
     totalCases = data;
     totalCases.map((countryItem) => {
+      countryMap.set(countryItem.country, [countryItem.countryInfo.lat, countryItem.countryInfo.long]);
       makeCircle(
         countryItem.countryInfo.lat,
         countryItem.countryInfo.long,
@@ -292,4 +294,11 @@ function defineRadius(cases) {
  
 export function NavigateToPoint(lat, lon) {
   mymap.setView([lat, lon], 5);
+}
+
+export function NavigateToCountry(name) {
+  const coords = countryMap.get(name);
+  if (coords.length > 0) {
+    mymap.setView(coords, 5);
+  }
 }

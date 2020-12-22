@@ -5,7 +5,7 @@ import {
   createMap,
   ChangeSwitcher,
   changeMapMode,
-  NavigateToPoint,
+  NavigateToCountry,
 } from "./map";
 import  graph  from "./graphic.js";
 createMap();
@@ -199,6 +199,7 @@ async function getCasesDeathsRecoverd() {
       console.log(this.querySelector(".mb-1").textContent);
       let country = this.querySelector(".mb-1").textContent;
       gr.drawChart(gr.mode, country, gr.proportion);
+      NavigateToCountry(country);
     });
   });
 
@@ -208,6 +209,7 @@ async function getCasesDeathsRecoverd() {
       console.log(this.querySelector(".mb-1").textContent);
       let country = this.querySelector(".mb-1").textContent;
       gr.drawCheck(gr.mode, country, gr.proportion);
+      NavigateToCountry(country);
     });
   });
 
@@ -217,6 +219,7 @@ async function getCasesDeathsRecoverd() {
       console.log(this.querySelector(".mb-1").textContent);
       let country = this.querySelector(".mb-1").textContent;
       gr.drawChart(gr.mode, country, gr.proportion);
+      NavigateToCountry(country);
     });
   });
 }
