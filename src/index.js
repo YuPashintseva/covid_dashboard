@@ -226,7 +226,6 @@ async function getCasesDeathsRecoverd() {
 //mode switchers
 document.querySelector('#nav-home-tab').addEventListener("click", function() {
   changeMapMode('total_cases');
-  
   gr.drawChart("allCases", gr.country, gr.proportion);
 });
 
@@ -303,26 +302,11 @@ document.querySelector("#switch_day").addEventListener("click", function() {
   ChangeSwitcher(switchcount, this.getAttribute("value"));
 });
 
-// FOR TOP SWITCHER END
-
-// FOR DEFAULT MAP MODE START
-//changeMapMode('active_cases');
-//changeMapMode('recover_cases');
-//changeMapMode('fatal_cases');
-//changeMapMode('total_cases');
-// FOR DEFAULT MAP MODE END
-
-// FOR NAVIGATE ON MAP
-// 33 - latitude, 65 - longitude
-//NavigateToPoint(33,65);
-
-
 const mapTabs = document.querySelectorAll(".tab__links");
 mapTabs.forEach((item) => {
   item.addEventListener("click", function() {
-    console.log(this.id);
-
       if (this.id === 'fatal_cases') {
+        gr.drawChart("deaths", gr.country, gr.proportion);
         document.querySelectorAll('.nav-link').forEach((item) => {
           if (item.getAttribute('href') === '#nav-deaths') {
             item.className = "nav-link text-dark active";
@@ -340,6 +324,7 @@ mapTabs.forEach((item) => {
           }
         })
       } else if (this.id === 'recover_cases') {
+        gr.drawChart("recovered", gr.country, gr.proportion);
         document.querySelectorAll('.nav-link').forEach((item) => {
           if (item.getAttribute('href') === '#nav-recovered') {
             item.className = "nav-link text-dark active";
@@ -357,6 +342,7 @@ mapTabs.forEach((item) => {
           }
         })
       } else if (this.id === 'total_cases') {
+        gr.drawChart("allCases", gr.country, gr.proportion);
         document.querySelectorAll('.nav-link').forEach((item) => {
           if (item.getAttribute('href') === '#nav-cases') {
             item.className = "nav-link text-dark active";
