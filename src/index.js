@@ -315,3 +315,66 @@ document.querySelector("#switch_day").addEventListener("click", function() {
 // FOR NAVIGATE ON MAP
 // 33 - latitude, 65 - longitude
 //NavigateToPoint(33,65);
+
+
+const mapTabs = document.querySelectorAll(".tab__links");
+mapTabs.forEach((item) => {
+  item.addEventListener("click", function() {
+    console.log(this.id);
+
+      if (this.id === 'fatal_cases') {
+        document.querySelectorAll('.nav-link').forEach((item) => {
+          if (item.getAttribute('href') === '#nav-deaths') {
+            item.className = "nav-link text-dark active";
+            item.setAttribute("aria-selected", true);
+          } else {
+            item.className = "nav-link text-dark";
+            item.setAttribute("aria-selected", false);
+          }
+        });
+        document.querySelectorAll('.tab-pane').forEach((item) => {
+          if (item.getAttribute('id') === 'nav-deaths') {
+            item.className = "tab-pane fade active show";
+          } else {
+            item.className = "tab-pane fade";
+          }
+        })
+      } else if (this.id === 'recover_cases') {
+        document.querySelectorAll('.nav-link').forEach((item) => {
+          if (item.getAttribute('href') === '#nav-recovered') {
+            item.className = "nav-link text-dark active";
+            item.setAttribute("aria-selected", true);
+          } else {
+            item.className = "nav-link text-dark";
+            item.setAttribute("aria-selected", false);
+          }
+        });
+        document.querySelectorAll('.tab-pane').forEach((item) => {
+          if (item.getAttribute('id') === 'nav-recovered') {
+            item.className = "tab-pane fade active show";
+          } else {
+            item.className = "tab-pane fade";
+          }
+        })
+      } else if (this.id === 'total_cases') {
+        document.querySelectorAll('.nav-link').forEach((item) => {
+          if (item.getAttribute('href') === '#nav-cases') {
+            item.className = "nav-link text-dark active";
+            item.setAttribute("aria-selected", true);
+          } else {
+            item.className = "nav-link text-dark";
+            item.setAttribute("aria-selected", false);
+          }
+        });
+        document.querySelectorAll('.tab-pane').forEach((item) => {
+          if (item.getAttribute('id') === 'nav-cases') {
+            item.className = "tab-pane fade active show";
+          } else {
+            item.className = "tab-pane fade";
+          }
+        });
+      }
+
+    changeMapMode(this.id);
+  });
+});
