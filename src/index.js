@@ -177,7 +177,7 @@ async function getCasesDeathsRecoverd() {
         CASESTITLE.textContent = "Last Day 100K pop";
         CASESGLOBAL.textContent = "формула";
       }
-    });
+    }); 
   });
 
   // DATA LIST OPTIONS
