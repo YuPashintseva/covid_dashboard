@@ -836,6 +836,7 @@ for (var i = 0; i < inputs.length; i++) {
       gr.drawChart(gr.mode, this.value, gr.proportion);
     } else {
       NavigateToDefault();
+      gr.drawCheck("allCases", "The World", "all");
     }
   });
 }
