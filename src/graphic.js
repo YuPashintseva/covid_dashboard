@@ -46,13 +46,10 @@ class graph {
   createContainer() {
     let cont = document.createElement("div");
     cont.setAttribute("id", "columnchart_values");
-    //cont.style.width = "900px";
-    //cont.style.height = "400px";
     let butCont = document.createElement("div");
     butCont.style.height = "20%";
     butCont.style.maxWidth = "100%";
     butCont.style.flexGrow = "1";
-    //butCont.style.width = "531px";
     butCont.style.display = "flex";
     butCont.style.justifyContent = "center";
 
@@ -127,8 +124,6 @@ class graph {
       bigCont.removeChild(bigCont.firstChild);
     }
     butCont.appendChild(allCases);
-    //butCont.appendChild(deaths);
-    //butCont.appendChild(recovered);
     butCont.appendChild(total);
     butCont.appendChild(hundred);
 
