@@ -687,7 +687,6 @@ function draw(currentCountry, proportion, period) {
   let globalCases = 0;
   let globalDeaths = 0;
   let globalRecovered = 0;
-  let listOptionValue = ``;
 
   // CLEAR LIST BLOCK
   CASESLIST.innerHTML = "";
@@ -747,10 +746,7 @@ function draw(currentCountry, proportion, period) {
     // CALCULATE ALL CASES IN EVERY GROUP
     globalCases += Number(data[i].cases);
     globalDeaths += Number(data[i].deaths);
-    globalRecovered += Number(data[i].recovered);
-
-    // CREATE TAGS OPTION IN DATALIST
-    listOptionValue += `<option class="search__item" value="${data[i].country}">`;
+    globalRecovered += Number(data[i].recovered); 
   }
 
   // DATA LIST OPTIONS
@@ -818,6 +814,7 @@ mapTabs.forEach((item) => {
     changeMapMode(this.id);
   });
 });
+
 
 let inputs = document.querySelectorAll("input[list]");
 for (var i = 0; i < inputs.length; i++) {
