@@ -225,7 +225,7 @@ class graph {
     ////////////////////////////////////////////////////////////
     if (proportion === "100") {
       options.title = `${this.country}: ${this.mode} Per 100 thousand`;
-      options.vAxis.logScale = "false";
+      options.vAxis.logScale = "true";
       //options.colors=['yellow'];
       options.chartArea = { backgroundColor: "yellow" };
     } else if (proportion !== "100") {
