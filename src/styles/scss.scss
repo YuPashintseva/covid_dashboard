@@ -156,6 +156,9 @@ label:active:after {
   }
 
   &__info {
+    &-inner {
+      background-color: #fff;
+    }
   }
 
   &__deaths {
