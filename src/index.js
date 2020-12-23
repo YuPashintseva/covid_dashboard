@@ -20,7 +20,7 @@ function onchange() {
 }
 //Fullscreen handling
 let fullscr = document.querySelectorAll('.fullscreen');
-let map = document.querySelector('.map');
+let map = document.querySelector('.main__map');
 let tab = document.querySelector('.main__info-inner');
 let gra = document.querySelector('.main__graphic');
 //map
