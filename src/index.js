@@ -11,13 +11,48 @@ import {
 import graph from "./graphic.js";
 createMap();
 
-//
+//Graph initiation and management
 const gr = new graph("allCases", "The World", "all");
 gr.drawCheck("allCases", "The World", "all");
 window.onresize = () => gr.drawCheck(gr.mode, gr.country, gr.proportion);
 function onchange() {
   gr.drawCheck("allCases", "The World", "all");
 }
+//Fullscreen handling
+let fullscr = document.querySelectorAll('.fullscreen');
+let map = document.querySelector('.map');
+let tab = document.querySelector('.main__info-inner');
+let gra = document.querySelector('.main__graphic');
+//map
+fullscr[0].addEventListener('click', ()=>{
+  if (!document.fullscreenElement) {
+    map.requestFullscreen();
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+})
+//tab
+fullscr[1].addEventListener('click', ()=>{
+  if (!document.fullscreenElement) {
+    tab.requestFullscreen();
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+})
+//graph
+fullscr[2].addEventListener('click', ()=>{
+  if (!document.fullscreenElement) {
+    gra.requestFullscreen();
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+})
 //
 const CASESLIST = document.querySelector(".cases__list");
 const DEATHSLIST = document.querySelector(".deaths__list");
